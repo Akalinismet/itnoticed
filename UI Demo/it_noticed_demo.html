@@ -1,802 +1,2027 @@
 <!DOCTYPE html>
-<html lang="tr">
+<html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>IT NOTICED — Branch</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,450;0,9..144,600;1,9..144,450&family=JetBrains+Mono:wght@400;500;600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
-<style>
-  :root{
-    --void:#0A0B0D;
-    --void-2:#111319;
-    --panel:#15171E;
-    --panel-2:#191c24;
-    --line:#262933;
-    --bone:#EAE6DD;
-    --bone-dim:#8B8B93;
-    --ember:#D98C3D;
-    --ember-dim:#7A5A34;
-    --ghost:#7C7BA0;
-    --ghost-dim:#3E3E56;
-    --drift:#B4483F;
-    --ok:#7FA37A;
-    --serif:'Fraunces', serif;
-    --mono:'JetBrains Mono', monospace;
-    --sans:'Inter', sans-serif;
-  }
-  *{box-sizing:border-box; margin:0; padding:0;}
-  html,body{ background:var(--void); color:var(--bone); font-family:var(--sans); min-height:100vh; overflow-x:hidden; }
-  body{
-    background-image:
-      radial-gradient(ellipse 900px 500px at 50% -10%, rgba(217,140,61,0.05), transparent 60%),
-      radial-gradient(ellipse 700px 500px at 90% 100%, rgba(124,123,160,0.04), transparent 60%);
-  }
-  ::selection{background:var(--ember-dim); color:var(--bone);}
-  a{color:inherit; text-decoration:none;}
-  button{font-family:inherit;}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IT NOTICED — Branch</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,450;0,9..144,600;1,9..144,450&family=JetBrains+Mono:wght@400;500;600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --void: #0A0B0D;
+            --void-2: #111319;
+            --panel: #15171E;
+            --panel-2: #191c24;
+            --line: #262933;
+            --bone: #EAE6DD;
+            --bone-dim: #8B8B93;
+            --ember: #D98C3D;
+            --ember-dim: #7A5A34;
+            --ghost: #7C7BA0;
+            --ghost-dim: #3E3E56;
+            --branch-dim: #53555F;
+            --drift: #B4483F;
+            --ok: #7FA37A;
+            --serif: 'Fraunces', serif;
+            --mono: 'JetBrains Mono', monospace;
+            --sans: 'Inter', sans-serif;
+        }
 
-  .shell{ max-width:520px; margin:0 auto; min-height:100vh; position:relative; display:flex; flex-direction:column; }
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
 
-  header.top{ padding:22px 20px 14px; display:flex; align-items:baseline; justify-content:space-between; border-bottom:1px solid var(--line); }
-  .brand{ font-family:var(--mono); font-size:12px; letter-spacing:0.18em; color:var(--bone-dim); }
-  .brand b{color:var(--ember); font-weight:600;}
-  .tagline{ font-family:var(--serif); font-style:italic; font-size:11px; color:var(--ghost); letter-spacing:.01em; margin-top:3px; }
-  .clock{ font-family:var(--mono); font-size:11px; color:var(--bone-dim); letter-spacing:0.05em; }
+        html, body {
+            background: var(--void);
+            color: var(--bone);
+            font-family: var(--sans);
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
 
-  nav.tabs{ display:flex; border-bottom:1px solid var(--line); background:var(--void-2); }
-  nav.tabs button{ flex:1; background:none; border:none; color:var(--bone-dim); font-family:var(--mono); font-size:10.5px; letter-spacing:0.16em; padding:16px 4px; cursor:pointer; position:relative; transition:color .25s ease; }
-  nav.tabs button.active{color:var(--bone);}
-  nav.tabs button.active::after{ content:""; position:absolute; left:16%; right:16%; bottom:0; height:2px; background:var(--ember); }
-  nav.tabs button:hover{color:var(--bone);}
+        body {
+            background-image: radial-gradient(ellipse 900px 500px at 50% -10%, rgba(217,140,61,0.05), transparent 60%), radial-gradient(ellipse 700px 500px at 90% 100%, rgba(124,123,160,0.04), transparent 60%);
+        }
 
-  main{ flex:1; padding:26px 20px 60px; animation:fadeIn .5s ease; }
-  @keyframes fadeIn{ from{opacity:0; transform:translateY(6px);} to{opacity:1; transform:translateY(0);} }
-  @keyframes fadeInFast{ from{opacity:0;} to{opacity:1;} }
-  @keyframes riseIn{ from{opacity:0; transform:translateY(4px);} to{opacity:1; transform:translateY(0);} }
+        ::selection {
+            background: var(--ember-dim);
+            color: var(--bone);
+        }
 
-  .eyebrow{ font-family:var(--mono); font-size:10px; letter-spacing:0.16em; color:var(--ghost); margin-bottom:8px; }
-  h1{ font-family:var(--serif); font-weight:450; font-size:26px; line-height:1.25; letter-spacing:-0.01em; color:var(--bone); margin-bottom:6px; }
-  h1 em{font-style:italic; color:var(--ember); font-weight:450;}
-  .sub{ font-size:13px; color:var(--bone-dim); line-height:1.5; margin-bottom:22px; max-width:42ch; }
+        a {
+            color: inherit;
+            text-decoration: none;
+        }
 
-  /* ---- breadcrumb / drilldown ---- */
-  .crumb{ display:flex; align-items:center; gap:6px; font-family:var(--mono); font-size:10px; letter-spacing:.08em; color:var(--bone-dim); margin-bottom:14px; flex-wrap:wrap; }
-  .crumb .seg{cursor:pointer;}
-  .crumb .seg:hover{color:var(--bone);}
-  .crumb .seg.current{color:var(--ember); cursor:default;}
-  .crumb .sep{color:var(--ghost-dim);}
-  .back-btn{
-    display:inline-flex; align-items:center; gap:6px;
-    background:none; border:1px solid var(--line); color:var(--bone-dim);
-    font-family:var(--mono); font-size:10px; letter-spacing:.08em;
-    padding:7px 12px; cursor:pointer; border-radius:2px; margin-bottom:14px;
-  }
-  .back-btn:hover{color:var(--bone); border-color:var(--ghost-dim);}
+        button {
+            font-family: inherit;
+        }
 
-  /* ---- Tree screen ---- */
-  .tree-wrap{ position:relative; width:100%; aspect-ratio:1/1.05; margin-bottom:8px; }
-  .tree-wrap svg{width:100%; height:100%; overflow:visible;}
-  .branch{ fill:none; stroke-linecap:round; cursor:pointer; transition:opacity .2s ease; }
-  .branch.dimmed{opacity:.12 !important;}
-  .node-label{ font-family:var(--mono); font-size:9.5px; fill:var(--bone-dim); letter-spacing:.03em; }
-  .now-core{ fill:var(--void); stroke:var(--bone); stroke-width:1.4; }
-  .now-core-glow{ fill:none; stroke:var(--ember); stroke-width:1; opacity:.35; animation:pulse 3.2s ease-in-out infinite; }
-  @keyframes pulse{ 0%,100%{opacity:.15; r:15;} 50%{opacity:.4; r:19;} }
+        .shell {
+            max-width: 520px;
+            margin: 0 auto;
+            min-height: 100vh;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+        }
 
-  .confidence-row{ display:flex; align-items:center; justify-content:space-between; padding:12px 14px; border:1px solid var(--line); background:var(--panel); border-radius:2px; margin-top:6px; font-family:var(--mono); font-size:10.5px; }
-  .confidence-row .k{color:var(--bone-dim); letter-spacing:.1em;}
-  .confidence-row .v{color:var(--drift); letter-spacing:.06em; transition:color .3s ease;}
-  .confidence-row .v.rising{color:var(--ok);}
+        header.top {
+            padding: 22px 20px 14px;
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+            border-bottom: 1px solid var(--line);
+        }
 
-  .future-list{ margin-top:18px; display:flex; flex-direction:column; gap:1px; border:1px solid var(--line); }
-  .future-row{ display:flex; align-items:center; gap:12px; padding:12px 14px; background:var(--panel); cursor:pointer; transition:background .2s ease; }
-  .future-row:hover{background:var(--panel-2);}
-  .future-row .bar-track{ flex:1; height:3px; background:var(--void-2); position:relative; border-radius:2px; overflow:hidden; }
-  .future-row .bar-fill{ position:absolute; left:0; top:0; bottom:0; background:var(--ember); border-radius:2px; transition:width .4s ease; }
-  .future-row .name{ font-family:var(--sans); font-size:13px; color:var(--bone); width:118px; flex-shrink:0; display:flex; align-items:center; gap:6px;}
-  .future-row .name .chev{color:var(--ghost); font-size:10px;}
-  .future-row .pct{ font-family:var(--mono); font-size:12px; color:var(--ember); width:36px; text-align:right; flex-shrink:0; }
-  .future-row .bump{ font-family:var(--mono); font-size:9px; color:var(--ok); margin-left:4px; animation:riseIn .3s ease; }
+        .brand {
+            font-family: var(--mono);
+            font-size: 12px;
+            letter-spacing: 0.18em;
+            color: var(--bone-dim);
+        }
 
-  .past-strip{ display:flex; gap:8px; margin-top:14px; overflow-x:auto; padding-bottom:6px; }
-  .past-chip{ font-family:var(--mono); font-size:10px; color:var(--ghost); border:1px solid var(--ghost-dim); padding:6px 10px; white-space:nowrap; border-radius:100px; flex-shrink:0; cursor:pointer; background:none; transition:all .2s ease;}
-  .past-chip:hover{color:var(--bone); border-color:var(--ghost);}
-  .past-chip.active{background:var(--ghost-dim); color:var(--bone);}
+            .brand b {
+                color: var(--ember);
+                font-weight: 600;
+            }
 
-  .node-detail{
-    margin-top:14px; border:1px solid var(--ghost-dim); background:var(--panel);
-    animation:riseIn .3s ease; overflow:hidden;
-  }
-  .node-detail .nd-head{
-    padding:12px 14px; border-bottom:1px solid var(--line); display:flex; justify-content:space-between; align-items:center;
-  }
-  .node-detail .nd-head h4{font-family:var(--serif); font-size:15px; font-weight:450;}
-  .node-detail .nd-head .close-x{background:none; border:none; color:var(--bone-dim); cursor:pointer; font-size:14px;}
-  .node-detail .nd-body{padding:14px;}
-  .growth-line{
-    display:flex; align-items:center; justify-content:space-between; gap:10px;
-    font-family:var(--mono); font-size:11px; color:var(--bone-dim); margin-bottom:12px;
-  }
-  .growth-line .arrow{color:var(--ghost);}
-  .growth-line .now-val{color:var(--ember); font-weight:600;}
-  .criteria-grid{ display:flex; flex-direction:column; gap:8px; }
-  .criteria-item{ display:flex; align-items:center; gap:10px; }
-  .criteria-item .c-label{ font-family:var(--mono); font-size:9px; letter-spacing:.08em; color:var(--bone-dim); width:76px; flex-shrink:0;}
-  .criteria-item .c-track{flex:1; height:4px; background:var(--void-2); border-radius:2px; overflow:hidden;}
-  .criteria-item .c-fill{height:100%; background:var(--ghost); border-radius:2px;}
-  .criteria-item .c-val{font-family:var(--mono); font-size:10px; color:var(--ghost); width:28px; text-align:right;}
+        .tagline {
+            font-family: var(--serif);
+            font-style: italic;
+            font-size: 11px;
+            color: var(--ghost);
+            letter-spacing: .01em;
+            margin-top: 3px;
+        }
 
-  /* ---- Decision screen ---- */
-  .field-label{ font-family:var(--mono); font-size:10px; letter-spacing:.1em; color:var(--bone-dim); margin-bottom:8px; display:block; }
-  textarea, input[type=text]{ width:100%; background:var(--panel); border:1px solid var(--line); color:var(--bone); font-family:var(--serif); font-size:17px; padding:14px; border-radius:2px; resize:none; outline:none; }
-  textarea:focus, input[type=text]:focus{border-color:var(--ember-dim);}
-  textarea::placeholder, input::placeholder{color:#54565f;}
+        .top-right {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
 
-  .cat-row{ display:flex; gap:6px; flex-wrap:wrap; margin-top:16px; }
-  .cat-pill{
-    background:none; border:1px solid var(--line); color:var(--bone-dim);
-    font-family:var(--mono); font-size:10px; letter-spacing:.05em;
-    padding:8px 12px; cursor:pointer; border-radius:100px; transition:all .2s ease;
-  }
-  .cat-pill.active{background:var(--ember); border-color:var(--ember); color:var(--void);}
-  .cat-pill:hover:not(.active){border-color:var(--ghost-dim); color:var(--bone);}
+        .clock {
+            font-family: var(--mono);
+            font-size: 11px;
+            color: var(--bone-dim);
+            letter-spacing: 0.05em;
+            padding-top: 2px;
+        }
 
-  .opt-row{ display:flex; gap:8px; margin-top:10px; }
-  .opt-row input{flex:1; font-size:14px; font-family:var(--sans); padding:11px 12px;}
-  .opt-row button.rm{ background:none; border:1px solid var(--line); color:var(--bone-dim); width:38px; cursor:pointer; font-family:var(--mono); border-radius:2px; }
-  .add-opt{ margin-top:10px; background:none; border:1px dashed var(--line); color:var(--bone-dim); font-family:var(--mono); font-size:11px; letter-spacing:.08em; padding:10px; width:100%; cursor:pointer; border-radius:2px; }
-  .add-opt:hover{color:var(--bone); border-color:var(--ghost-dim);}
+        .gear-btn {
+            background: none;
+            border: 1px solid var(--line);
+            color: var(--bone-dim);
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all .2s ease;
+            flex-shrink: 0;
+        }
 
-  .btn{ font-family:var(--mono); font-size:11px; letter-spacing:.1em; padding:14px 20px; border:1px solid var(--ember); background:transparent; color:var(--ember); cursor:pointer; width:100%; margin-top:18px; border-radius:2px; transition:all .2s ease; }
-  .btn:hover{background:var(--ember); color:var(--void);}
-  .btn:disabled{opacity:.3; cursor:not-allowed;}
-  .btn:disabled:hover{background:transparent; color:var(--ember);}
-  .btn.subtle{border-color:var(--ghost); color:var(--ghost);}
-  .btn.subtle:hover{background:var(--ghost); color:var(--void);}
+            .gear-btn:hover {
+                color: var(--bone);
+                border-color: var(--ghost-dim);
+            }
 
-  .predicted-block{ margin-top:22px; border:1px solid var(--line); animation:riseIn .3s ease;}
-  .predict-tag{ font-family:var(--mono); font-size:9.5px; letter-spacing:.14em; color:var(--ghost); padding:10px 14px; border-bottom:1px solid var(--line); background:var(--void-2); }
-  .choice-row{ display:flex; align-items:center; justify-content:space-between; padding:15px 14px; background:var(--panel); border-bottom:1px solid var(--line); cursor:pointer; transition:background .2s ease; }
-  .choice-row:last-child{border-bottom:none;}
-  .choice-row:hover{background:var(--panel-2);}
-  .choice-row.selected{background:var(--ember-dim);}
-  .choice-row .c-name{font-size:14px;}
-  .choice-row .c-pct{font-family:var(--mono); font-size:13px; color:var(--bone-dim);}
-  .choice-row.is-predicted .c-pct{color:var(--ember); font-weight:600;}
+            .gear-btn svg {
+                width: 15px;
+                height: 15px;
+            }
 
-  .recorded-box{ margin-top:18px; padding:16px; border:1px solid var(--ember-dim); animation:fadeInFast .4s ease; }
-  .recorded-box .rb-top{ text-align:center; color:var(--ember); font-family:var(--mono); font-size:11px; letter-spacing:.14em; margin-bottom:10px;}
-  .recorded-box .rb-effect{ text-align:center; font-family:var(--mono); font-size:10.5px; color:var(--ok); }
+        nav.tabs {
+            display: flex;
+            border-bottom: 1px solid var(--line);
+            background: var(--void-2);
+        }
 
-  .hist-section{margin-top:32px;}
-  .hist-item{ display:flex; align-items:center; gap:10px; padding:11px 0; border-bottom:1px solid var(--line); }
-  .hist-item:last-child{border-bottom:none;}
-  .hist-item .hi-mark{ width:16px; text-align:center; font-family:var(--mono); font-size:11px; flex-shrink:0;}
-  .hist-item .hi-mark.match{color:var(--ok);}
-  .hist-item .hi-mark.diff{color:var(--drift);}
-  .hist-item .hi-main{flex:1; min-width:0;}
-  .hist-item .hi-text{font-size:12.5px; color:var(--bone); white-space:nowrap; overflow:hidden; text-overflow:ellipsis;}
-  .hist-item .hi-meta{font-family:var(--mono); font-size:9.5px; color:var(--bone-dim); margin-top:2px;}
-  .hist-item .hi-cat{font-family:var(--mono); font-size:8.5px; color:var(--ghost); border:1px solid var(--ghost-dim); padding:2px 6px; border-radius:100px; flex-shrink:0;}
+            nav.tabs button {
+                flex: 1;
+                background: none;
+                border: none;
+                color: var(--bone-dim);
+                font-family: var(--mono);
+                font-size: 10.5px;
+                letter-spacing: 0.16em;
+                padding: 16px 4px;
+                cursor: pointer;
+                position: relative;
+                transition: color .25s ease;
+            }
 
-  /* ---- Morning screen ---- */
-  .morning-item{ border:1px solid var(--line); margin-bottom:14px; background:var(--panel); }
-  .morning-item .mi-head{ padding:12px 14px; border-bottom:1px solid var(--line); display:flex; justify-content:space-between; align-items:center; }
-  .morning-item .mi-head .time{font-family:var(--mono); font-size:10px; color:var(--bone-dim);}
-  .morning-item .mi-head .predicted{font-family:var(--mono); font-size:10px; color:var(--ember);}
-  .morning-item .mi-body{padding:14px;}
-  .morning-item .mi-body .decision-text{font-family:var(--serif); font-size:16px; margin-bottom:4px;}
-  .morning-item .mi-body .chosen{font-size:12px; color:var(--bone-dim); margin-bottom:12px;}
-  .outcome-btns{display:flex; gap:6px; margin-bottom:12px;}
-  .outcome-btns button{ flex:1; background:none; border:1px solid var(--line); color:var(--bone-dim); font-family:var(--mono); font-size:10px; padding:9px 4px; cursor:pointer; border-radius:2px; }
-  .outcome-btns button.on{background:var(--bone); color:var(--void); border-color:var(--bone);}
+                nav.tabs button.active {
+                    color: var(--bone);
+                }
 
-  .context-field{margin-bottom:12px;}
-  .context-field textarea{ font-family:var(--sans); font-size:12.5px; padding:10px; min-height:44px; }
-  .context-field .field-label{margin-bottom:5px;}
+                    nav.tabs button.active::after {
+                        content: "";
+                        position: absolute;
+                        left: 16%;
+                        right: 16%;
+                        bottom: 0;
+                        height: 2px;
+                        background: var(--ember);
+                    }
 
-  .mood-guess{ font-family:var(--serif); font-style:italic; font-size:13.5px; color:var(--ghost); border-left:2px solid var(--ghost-dim); padding:8px 0 8px 12px; margin-top:4px; }
-  .mood-guess .lbl{ display:block; font-family:var(--mono); font-style:normal; font-size:9px; letter-spacing:.1em; color:var(--bone-dim); margin-bottom:4px; }
-  .mood-actions{display:flex; gap:14px; margin-top:8px;}
-  .mood-actions button{ background:none; border:none; color:var(--bone-dim); font-family:var(--mono); font-size:9.5px; letter-spacing:.08em; cursor:pointer; padding:0; }
-  .mood-actions button.ok{color:var(--ember);}
-  .mood-actions button.on{color:var(--bone);}
-  .mood-edit{margin-top:8px; display:flex; gap:6px;}
-  .mood-edit input{font-family:var(--sans); font-size:12px; padding:8px 10px;}
-  .mood-edit button{background:var(--ember); border:none; color:var(--void); font-family:var(--mono); font-size:10px; padding:0 12px; border-radius:2px; cursor:pointer;}
+                nav.tabs button:hover {
+                    color: var(--bone);
+                }
 
-  .empty-note{ font-family:var(--mono); font-size:11px; color:var(--bone-dim); text-align:center; padding:30px 10px; border:1px dashed var(--line); }
+        main {
+            flex: 1;
+            padding: 26px 20px 60px;
+            animation: fadeIn .5s ease;
+        }
 
-  .update-box{ margin-top:8px; text-align:center; padding:20px; border:1px solid var(--ember-dim); animation:riseIn .4s ease; }
-  .update-box .ub-top{font-family:var(--mono); font-size:11px; letter-spacing:.14em; color:var(--ember); margin-bottom:6px;}
-  .update-box .ub-sub{font-family:var(--mono); font-size:10px; color:var(--bone-dim);}
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(6px);
+            }
 
-  /* ---- Ghost screen ---- */
-  .divergence-select{ display:flex; flex-direction:column; gap:1px; border:1px solid var(--line); margin-bottom:20px; }
-  .divergence-select button{ text-align:left; background:var(--panel); border:none; color:var(--bone); font-family:var(--sans); font-size:13px; padding:13px 14px; cursor:pointer; transition:background .2s ease; }
-  .divergence-select button:hover{background:var(--panel-2);}
-  .divergence-select button.active{background:var(--ghost-dim); color:var(--bone);}
-  .divergence-select button .tag{ display:block; font-family:var(--mono); font-size:9.5px; color:var(--ghost); margin-top:2px; }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
 
-  .ghost-header{ font-family:var(--mono); font-size:10px; letter-spacing:.12em; color:var(--ghost); border-top:1px solid var(--ghost-dim); border-bottom:1px solid var(--ghost-dim); padding:10px 0; margin-bottom:2px; }
-  .ghost-card{ border-left:2px solid var(--ghost-dim); padding:14px 0 14px 16px; margin-left:4px; position:relative; cursor:pointer; }
-  .ghost-card::before{ content:""; position:absolute; left:-5px; top:20px; width:8px; height:8px; border-radius:50%; background:var(--void); border:2px solid var(--ghost); }
-  .ghost-card .gh-meta{ font-family:var(--mono); font-size:9.5px; color:var(--bone-dim); letter-spacing:.06em; margin-bottom:6px; }
-  .ghost-card .gh-meta .conf{color:var(--ghost);}
-  .ghost-card h3{ font-family:var(--serif); font-weight:450; font-size:16px; margin-bottom:5px; color:var(--bone); }
-  .ghost-card p{ font-size:12.5px; color:var(--bone-dim); line-height:1.55; max-width:44ch; }
-  .ghost-card .gh-extra{ font-size:12.5px; color:var(--ghost); line-height:1.55; max-width:44ch; margin-top:8px; animation:riseIn .3s ease;}
-  .ghost-card .gh-toggle{font-family:var(--mono); font-size:9px; color:var(--ghost); margin-top:8px; letter-spacing:.06em;}
-  .ghost-quote{ font-family:var(--serif); font-style:italic; font-size:13.5px; color:var(--ghost); text-align:center; padding:20px 10px 4px; line-height:1.6; }
+        @keyframes fadeInFast {
+            from {
+                opacity: 0;
+            }
 
-  footer.foot{ padding:16px 20px 26px; font-family:var(--mono); font-size:9.5px; color:#4d4f58; text-align:center; letter-spacing:.06em; border-top:1px solid var(--line); }
+            to {
+                opacity: 1;
+            }
+        }
 
-  @media (max-width:400px){ .future-row .name{width:92px; font-size:12px;} }
-</style>
+        @keyframes riseIn {
+            from {
+                opacity: 0;
+                transform: translateY(4px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .eyebrow {
+            font-family: var(--mono);
+            font-size: 10px;
+            letter-spacing: 0.16em;
+            color: var(--ghost);
+            margin-bottom: 8px;
+        }
+
+        h1 {
+            font-family: var(--serif);
+            font-weight: 450;
+            font-size: 26px;
+            line-height: 1.25;
+            letter-spacing: -0.01em;
+            color: var(--bone);
+            margin-bottom: 6px;
+        }
+
+            h1 em {
+                font-style: italic;
+                color: var(--ember);
+                font-weight: 450;
+            }
+
+        .sub {
+            font-size: 13px;
+            color: var(--bone-dim);
+            line-height: 1.5;
+            margin-bottom: 22px;
+            max-width: 42ch;
+        }
+
+        /* ---- settings modal ---- */
+        .modal-backdrop {
+            position: fixed;
+            inset: 0;
+            background: rgba(6,7,9,0.72);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 50;
+            animation: fadeInFast .2s ease;
+            padding: 20px;
+        }
+
+        .modal-box {
+            background: var(--panel);
+            border: 1px solid var(--line);
+            width: 100%;
+            max-width: 320px;
+            animation: riseIn .25s ease;
+        }
+
+        .modal-head {
+            padding: 16px 18px;
+            border-bottom: 1px solid var(--line);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+            .modal-head span {
+                font-family: var(--mono);
+                font-size: 10.5px;
+                letter-spacing: .14em;
+                color: var(--bone-dim);
+            }
+
+            .modal-head button {
+                background: none;
+                border: none;
+                color: var(--bone-dim);
+                cursor: pointer;
+                font-size: 16px;
+            }
+
+        .modal-body {
+            padding: 18px;
+        }
+
+        .lang-opt {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            width: 100%;
+            background: none;
+            border: 1px solid var(--line);
+            color: var(--bone);
+            font-family: var(--sans);
+            font-size: 14px;
+            padding: 13px 14px;
+            cursor: pointer;
+            border-radius: 2px;
+            margin-bottom: 8px;
+            transition: all .2s ease;
+        }
+
+            .lang-opt:last-child {
+                margin-bottom: 0;
+            }
+
+            .lang-opt:hover {
+                border-color: var(--ghost-dim);
+                background: var(--panel-2);
+            }
+
+            .lang-opt.active {
+                border-color: var(--ember);
+                color: var(--ember);
+            }
+
+            .lang-opt .check {
+                font-family: var(--mono);
+                font-size: 11px;
+            }
+
+        /* ---- breadcrumb / drilldown ---- */
+        .crumb {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-family: var(--mono);
+            font-size: 10px;
+            letter-spacing: .08em;
+            color: var(--bone-dim);
+            margin-bottom: 14px;
+            flex-wrap: wrap;
+        }
+
+            .crumb .seg {
+                cursor: pointer;
+            }
+
+                .crumb .seg:hover {
+                    color: var(--bone);
+                }
+
+                .crumb .seg.current {
+                    color: var(--ember);
+                    cursor: default;
+                }
+
+            .crumb .sep {
+                color: var(--ghost-dim);
+            }
+
+        /* ---- Tree screen ---- */
+        .tree-wrap {
+            position: relative;
+            width: 100%;
+            aspect-ratio: 1/1.05;
+            margin-bottom: 8px;
+        }
+
+            .tree-wrap svg {
+                width: 100%;
+                height: 100%;
+                overflow: visible;
+            }
+
+        .branch {
+            fill: none;
+            stroke-linecap: round;
+            cursor: pointer;
+            transition: opacity .2s ease;
+        }
+
+        .node-label {
+            font-family: var(--mono);
+            font-size: 9.5px;
+            fill: var(--bone-dim);
+            letter-spacing: .03em;
+        }
+
+        .now-core {
+            fill: var(--void);
+            stroke: var(--bone);
+            stroke-width: 1.4;
+        }
+
+        .now-core-glow {
+            fill: none;
+            stroke: var(--ember);
+            stroke-width: 1;
+            opacity: .35;
+            animation: pulse 3.2s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%,100% {
+                opacity: .15;
+                r: 15;
+            }
+
+            50% {
+                opacity: .4;
+                r: 19;
+            }
+        }
+
+        .legend-row {
+            display: flex;
+            gap: 16px;
+            margin: 2px 0 14px;
+            font-family: var(--mono);
+            font-size: 9.5px;
+            color: var(--bone-dim);
+        }
+
+            .legend-row .dot {
+                display: inline-block;
+                width: 7px;
+                height: 7px;
+                border-radius: 50%;
+                margin-right: 5px;
+                vertical-align: middle;
+            }
+
+                .legend-row .dot.on {
+                    background: var(--ember);
+                }
+
+                .legend-row .dot.off {
+                    background: var(--branch-dim);
+                }
+
+        .confidence-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 12px 14px;
+            border: 1px solid var(--line);
+            background: var(--panel);
+            border-radius: 2px;
+            margin-top: 6px;
+            font-family: var(--mono);
+            font-size: 10.5px;
+        }
+
+            .confidence-row .k {
+                color: var(--bone-dim);
+                letter-spacing: .1em;
+            }
+
+            .confidence-row .v {
+                color: var(--drift);
+                letter-spacing: .06em;
+                transition: color .3s ease;
+            }
+
+                .confidence-row .v.rising {
+                    color: var(--ok);
+                }
+
+        .future-list {
+            margin-top: 18px;
+            display: flex;
+            flex-direction: column;
+            gap: 1px;
+            border: 1px solid var(--line);
+        }
+
+        .future-row {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 14px;
+            background: var(--panel);
+            cursor: pointer;
+            transition: background .2s ease;
+        }
+
+            .future-row:hover {
+                background: var(--panel-2);
+            }
+
+            .future-row .bar-track {
+                flex: 1;
+                height: 3px;
+                background: var(--void-2);
+                position: relative;
+                border-radius: 2px;
+                overflow: hidden;
+            }
+
+            .future-row .bar-fill {
+                position: absolute;
+                left: 0;
+                top: 0;
+                bottom: 0;
+                border-radius: 2px;
+                transition: width .4s ease;
+            }
+
+                .future-row .bar-fill.on {
+                    background: var(--ember);
+                }
+
+                .future-row .bar-fill.off {
+                    background: var(--branch-dim);
+                }
+
+            .future-row .name {
+                font-family: var(--sans);
+                font-size: 13px;
+                color: var(--bone);
+                width: 118px;
+                flex-shrink: 0;
+                display: flex;
+                align-items: center;
+                gap: 6px;
+            }
+
+                .future-row .name .chev {
+                    color: var(--ghost);
+                    font-size: 10px;
+                }
+
+            .future-row .pct {
+                font-family: var(--mono);
+                font-size: 12px;
+                width: 36px;
+                text-align: right;
+                flex-shrink: 0;
+            }
+
+                .future-row .pct.on {
+                    color: var(--ember);
+                }
+
+                .future-row .pct.off {
+                    color: var(--bone-dim);
+                }
+
+            .future-row .bump {
+                font-family: var(--mono);
+                font-size: 9px;
+                color: var(--ok);
+                margin-left: 4px;
+                animation: riseIn .3s ease;
+            }
+
+        .past-strip {
+            display: flex;
+            gap: 8px;
+            margin-top: 14px;
+            overflow-x: auto;
+            padding-bottom: 6px;
+        }
+
+        .past-chip {
+            font-family: var(--mono);
+            font-size: 10px;
+            color: var(--ghost);
+            border: 1px solid var(--ghost-dim);
+            padding: 6px 10px;
+            white-space: nowrap;
+            border-radius: 100px;
+            flex-shrink: 0;
+            cursor: pointer;
+            background: none;
+            transition: all .2s ease;
+        }
+
+            .past-chip:hover {
+                color: var(--bone);
+                border-color: var(--ghost);
+            }
+
+            .past-chip.active {
+                background: var(--ghost-dim);
+                color: var(--bone);
+            }
+
+        .node-detail {
+            margin-top: 14px;
+            border: 1px solid var(--ghost-dim);
+            background: var(--panel);
+            animation: riseIn .3s ease;
+            overflow: hidden;
+        }
+
+            .node-detail .nd-head {
+                padding: 12px 14px;
+                border-bottom: 1px solid var(--line);
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+            }
+
+                .node-detail .nd-head h4 {
+                    font-family: var(--serif);
+                    font-size: 15px;
+                    font-weight: 450;
+                }
+
+                .node-detail .nd-head .close-x {
+                    background: none;
+                    border: none;
+                    color: var(--bone-dim);
+                    cursor: pointer;
+                    font-size: 14px;
+                }
+
+            .node-detail .nd-body {
+                padding: 14px;
+            }
+
+        .growth-line {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
+            font-family: var(--mono);
+            font-size: 11px;
+            color: var(--bone-dim);
+            margin-bottom: 12px;
+        }
+
+            .growth-line .arrow {
+                color: var(--ghost);
+            }
+
+            .growth-line .now-val {
+                color: var(--ember);
+                font-weight: 600;
+            }
+
+        .criteria-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .criteria-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+            .criteria-item .c-label {
+                font-family: var(--mono);
+                font-size: 9px;
+                letter-spacing: .08em;
+                color: var(--bone-dim);
+                width: 76px;
+                flex-shrink: 0;
+            }
+
+            .criteria-item .c-track {
+                flex: 1;
+                height: 4px;
+                background: var(--void-2);
+                border-radius: 2px;
+                overflow: hidden;
+            }
+
+            .criteria-item .c-fill {
+                height: 100%;
+                background: var(--ghost);
+                border-radius: 2px;
+            }
+
+            .criteria-item .c-val {
+                font-family: var(--mono);
+                font-size: 10px;
+                color: var(--ghost);
+                width: 28px;
+                text-align: right;
+            }
+
+        /* ---- Decision screen ---- */
+        .field-label {
+            font-family: var(--mono);
+            font-size: 10px;
+            letter-spacing: .1em;
+            color: var(--bone-dim);
+            margin-bottom: 8px;
+            display: block;
+        }
+
+        textarea, input[type=text] {
+            width: 100%;
+            background: var(--panel);
+            border: 1px solid var(--line);
+            color: var(--bone);
+            font-family: var(--serif);
+            font-size: 17px;
+            padding: 14px;
+            border-radius: 2px;
+            resize: none;
+            outline: none;
+        }
+
+            textarea:focus, input[type=text]:focus {
+                border-color: var(--ember-dim);
+            }
+
+            textarea::placeholder, input::placeholder {
+                color: #54565f;
+            }
+
+        .cat-row {
+            display: flex;
+            gap: 6px;
+            flex-wrap: wrap;
+            margin-top: 16px;
+        }
+
+        .cat-pill {
+            background: none;
+            border: 1px solid var(--line);
+            color: var(--bone-dim);
+            font-family: var(--mono);
+            font-size: 10px;
+            letter-spacing: .05em;
+            padding: 8px 12px;
+            cursor: pointer;
+            border-radius: 100px;
+            transition: all .2s ease;
+        }
+
+            .cat-pill.active {
+                background: var(--ember);
+                border-color: var(--ember);
+                color: var(--void);
+            }
+
+            .cat-pill:hover:not(.active) {
+                border-color: var(--ghost-dim);
+                color: var(--bone);
+            }
+
+        .opt-row {
+            display: flex;
+            gap: 8px;
+            margin-top: 10px;
+        }
+
+            .opt-row input {
+                flex: 1;
+                font-size: 14px;
+                font-family: var(--sans);
+                padding: 11px 12px;
+            }
+
+            .opt-row button.rm {
+                background: none;
+                border: 1px solid var(--line);
+                color: var(--bone-dim);
+                width: 38px;
+                cursor: pointer;
+                font-family: var(--mono);
+                border-radius: 2px;
+            }
+
+        .add-opt {
+            margin-top: 10px;
+            background: none;
+            border: 1px dashed var(--line);
+            color: var(--bone-dim);
+            font-family: var(--mono);
+            font-size: 11px;
+            letter-spacing: .08em;
+            padding: 10px;
+            width: 100%;
+            cursor: pointer;
+            border-radius: 2px;
+        }
+
+            .add-opt:hover {
+                color: var(--bone);
+                border-color: var(--ghost-dim);
+            }
+
+        .btn {
+            font-family: var(--mono);
+            font-size: 11px;
+            letter-spacing: .1em;
+            padding: 14px 20px;
+            border: 1px solid var(--ember);
+            background: transparent;
+            color: var(--ember);
+            cursor: pointer;
+            width: 100%;
+            margin-top: 18px;
+            border-radius: 2px;
+            transition: all .2s ease;
+        }
+
+            .btn:hover {
+                background: var(--ember);
+                color: var(--void);
+            }
+
+            .btn:disabled {
+                opacity: .3;
+                cursor: not-allowed;
+            }
+
+                .btn:disabled:hover {
+                    background: transparent;
+                    color: var(--ember);
+                }
+
+        .predicted-block {
+            margin-top: 22px;
+            border: 1px solid var(--line);
+            animation: riseIn .3s ease;
+        }
+
+        .predict-tag {
+            font-family: var(--mono);
+            font-size: 9.5px;
+            letter-spacing: .14em;
+            color: var(--ghost);
+            padding: 10px 14px;
+            border-bottom: 1px solid var(--line);
+            background: var(--void-2);
+        }
+
+        .choice-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 15px 14px;
+            background: var(--panel);
+            border-bottom: 1px solid var(--line);
+            cursor: pointer;
+            transition: background .2s ease;
+        }
+
+            .choice-row:last-child {
+                border-bottom: none;
+            }
+
+            .choice-row:hover {
+                background: var(--panel-2);
+            }
+
+            .choice-row.selected {
+                background: var(--ember-dim);
+            }
+
+            .choice-row .c-name {
+                font-size: 14px;
+            }
+
+            .choice-row .c-pct {
+                font-family: var(--mono);
+                font-size: 13px;
+                color: var(--bone-dim);
+            }
+
+            .choice-row.is-predicted .c-pct {
+                color: var(--ember);
+                font-weight: 600;
+            }
+
+        .recorded-box {
+            margin-top: 18px;
+            padding: 16px;
+            border: 1px solid var(--ember-dim);
+            animation: fadeInFast .4s ease;
+        }
+
+            .recorded-box .rb-top {
+                text-align: center;
+                color: var(--ember);
+                font-family: var(--mono);
+                font-size: 11px;
+                letter-spacing: .14em;
+                margin-bottom: 10px;
+            }
+
+            .recorded-box .rb-effect {
+                text-align: center;
+                font-family: var(--mono);
+                font-size: 10.5px;
+                color: var(--ok);
+            }
+
+        .hist-section {
+            margin-top: 32px;
+        }
+
+        .hist-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 11px 0;
+            border-bottom: 1px solid var(--line);
+        }
+
+            .hist-item:last-child {
+                border-bottom: none;
+            }
+
+            .hist-item .hi-mark {
+                width: 16px;
+                text-align: center;
+                font-family: var(--mono);
+                font-size: 11px;
+                flex-shrink: 0;
+            }
+
+                .hist-item .hi-mark.match {
+                    color: var(--ok);
+                }
+
+                .hist-item .hi-mark.diff {
+                    color: var(--drift);
+                }
+
+            .hist-item .hi-main {
+                flex: 1;
+                min-width: 0;
+            }
+
+            .hist-item .hi-text {
+                font-size: 12.5px;
+                color: var(--bone);
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+            }
+
+            .hist-item .hi-meta {
+                font-family: var(--mono);
+                font-size: 9.5px;
+                color: var(--bone-dim);
+                margin-top: 2px;
+            }
+
+            .hist-item .hi-cat {
+                font-family: var(--mono);
+                font-size: 8.5px;
+                color: var(--ghost);
+                border: 1px solid var(--ghost-dim);
+                padding: 2px 6px;
+                border-radius: 100px;
+                flex-shrink: 0;
+            }
+
+        /* ---- Daily screen ---- */
+        .morning-item {
+            border: 1px solid var(--line);
+            margin-bottom: 14px;
+            background: var(--panel);
+        }
+
+            .morning-item .mi-head {
+                padding: 12px 14px;
+                border-bottom: 1px solid var(--line);
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+            }
+
+                .morning-item .mi-head .time {
+                    font-family: var(--mono);
+                    font-size: 10px;
+                    color: var(--bone-dim);
+                }
+
+                .morning-item .mi-head .predicted {
+                    font-family: var(--mono);
+                    font-size: 10px;
+                    color: var(--ember);
+                }
+
+            .morning-item .mi-body {
+                padding: 14px;
+            }
+
+                .morning-item .mi-body .decision-text {
+                    font-family: var(--serif);
+                    font-size: 16px;
+                    margin-bottom: 4px;
+                }
+
+                .morning-item .mi-body .chosen {
+                    font-size: 12px;
+                    color: var(--bone-dim);
+                    margin-bottom: 12px;
+                }
+
+        .outcome-btns {
+            display: flex;
+            gap: 6px;
+            margin-bottom: 12px;
+        }
+
+            .outcome-btns button {
+                flex: 1;
+                background: none;
+                border: 1px solid var(--line);
+                color: var(--bone-dim);
+                font-family: var(--mono);
+                font-size: 10px;
+                padding: 9px 4px;
+                cursor: pointer;
+                border-radius: 2px;
+            }
+
+                .outcome-btns button.on {
+                    background: var(--bone);
+                    color: var(--void);
+                    border-color: var(--bone);
+                }
+
+        .context-field {
+            margin-bottom: 12px;
+        }
+
+            .context-field textarea {
+                font-family: var(--sans);
+                font-size: 12.5px;
+                padding: 10px;
+                min-height: 44px;
+            }
+
+            .context-field .field-label {
+                margin-bottom: 5px;
+            }
+
+        .mood-guess {
+            font-family: var(--serif);
+            font-style: italic;
+            font-size: 13.5px;
+            color: var(--ghost);
+            border-left: 2px solid var(--ghost-dim);
+            padding: 8px 0 8px 12px;
+            margin-top: 4px;
+        }
+
+            .mood-guess .lbl {
+                display: block;
+                font-family: var(--mono);
+                font-style: normal;
+                font-size: 9px;
+                letter-spacing: .1em;
+                color: var(--bone-dim);
+                margin-bottom: 4px;
+            }
+
+        .mood-actions {
+            display: flex;
+            gap: 14px;
+            margin-top: 8px;
+        }
+
+            .mood-actions button {
+                background: none;
+                border: none;
+                color: var(--bone-dim);
+                font-family: var(--mono);
+                font-size: 9.5px;
+                letter-spacing: .08em;
+                cursor: pointer;
+                padding: 0;
+            }
+
+                .mood-actions button.ok {
+                    color: var(--ember);
+                }
+
+                .mood-actions button.on {
+                    color: var(--bone);
+                }
+
+        .mood-edit {
+            margin-top: 8px;
+            display: flex;
+            gap: 6px;
+        }
+
+            .mood-edit input {
+                font-family: var(--sans);
+                font-size: 12px;
+                padding: 8px 10px;
+            }
+
+            .mood-edit button {
+                background: var(--ember);
+                border: none;
+                color: var(--void);
+                font-family: var(--mono);
+                font-size: 10px;
+                padding: 0 12px;
+                border-radius: 2px;
+                cursor: pointer;
+            }
+
+        .empty-note {
+            font-family: var(--mono);
+            font-size: 11px;
+            color: var(--bone-dim);
+            text-align: center;
+            padding: 30px 10px;
+            border: 1px dashed var(--line);
+        }
+
+        .update-box {
+            margin-top: 8px;
+            text-align: center;
+            padding: 20px;
+            border: 1px solid var(--ember-dim);
+            animation: riseIn .4s ease;
+        }
+
+            .update-box .ub-top {
+                font-family: var(--mono);
+                font-size: 11px;
+                letter-spacing: .14em;
+                color: var(--ember);
+                margin-bottom: 6px;
+            }
+
+            .update-box .ub-sub {
+                font-family: var(--mono);
+                font-size: 10px;
+                color: var(--bone-dim);
+            }
+
+        /* ---- Alternate screen ---- */
+        .divergence-select {
+            display: flex;
+            flex-direction: column;
+            gap: 1px;
+            border: 1px solid var(--line);
+            margin-bottom: 20px;
+        }
+
+            .divergence-select button {
+                text-align: left;
+                background: var(--panel);
+                border: none;
+                color: var(--bone);
+                font-family: var(--sans);
+                font-size: 13px;
+                padding: 13px 14px;
+                cursor: pointer;
+                transition: background .2s ease;
+            }
+
+                .divergence-select button:hover {
+                    background: var(--panel-2);
+                }
+
+                .divergence-select button.active {
+                    background: var(--ghost-dim);
+                    color: var(--bone);
+                }
+
+                .divergence-select button .tag {
+                    display: block;
+                    font-family: var(--mono);
+                    font-size: 9.5px;
+                    color: var(--ghost);
+                    margin-top: 2px;
+                }
+
+        .ghost-header {
+            font-family: var(--mono);
+            font-size: 10px;
+            letter-spacing: .12em;
+            color: var(--ghost);
+            border-top: 1px solid var(--ghost-dim);
+            border-bottom: 1px solid var(--ghost-dim);
+            padding: 10px 0;
+            margin-bottom: 2px;
+        }
+
+        .ghost-card {
+            border-left: 2px solid var(--ghost-dim);
+            padding: 14px 0 14px 16px;
+            margin-left: 4px;
+            position: relative;
+            cursor: pointer;
+        }
+
+            .ghost-card::before {
+                content: "";
+                position: absolute;
+                left: -5px;
+                top: 20px;
+                width: 8px;
+                height: 8px;
+                border-radius: 50%;
+                background: var(--void);
+                border: 2px solid var(--ghost);
+            }
+
+            .ghost-card .gh-meta {
+                font-family: var(--mono);
+                font-size: 9.5px;
+                color: var(--bone-dim);
+                letter-spacing: .06em;
+                margin-bottom: 6px;
+            }
+
+                .ghost-card .gh-meta .conf {
+                    color: var(--ghost);
+                }
+
+            .ghost-card h3 {
+                font-family: var(--serif);
+                font-weight: 450;
+                font-size: 16px;
+                margin-bottom: 5px;
+                color: var(--bone);
+            }
+
+            .ghost-card p {
+                font-size: 12.5px;
+                color: var(--bone-dim);
+                line-height: 1.55;
+                max-width: 44ch;
+            }
+
+            .ghost-card .gh-extra {
+                font-size: 12.5px;
+                color: var(--ghost);
+                line-height: 1.55;
+                max-width: 44ch;
+                margin-top: 8px;
+                animation: riseIn .3s ease;
+            }
+
+            .ghost-card .gh-toggle {
+                font-family: var(--mono);
+                font-size: 9px;
+                color: var(--ghost);
+                margin-top: 8px;
+                letter-spacing: .06em;
+            }
+
+        .ghost-quote {
+            font-family: var(--serif);
+            font-style: italic;
+            font-size: 13.5px;
+            color: var(--ghost);
+            text-align: center;
+            padding: 20px 10px 4px;
+            line-height: 1.6;
+        }
+
+        footer.foot {
+            padding: 16px 20px 26px;
+            font-family: var(--mono);
+            font-size: 9.5px;
+            color: #4d4f58;
+            text-align: center;
+            letter-spacing: .06em;
+            border-top: 1px solid var(--line);
+        }
+
+        @media (max-width:400px) {
+            .future-row .name {
+                width: 92px;
+                font-size: 12px;
+            }
+        }
+    </style>
 </head>
 <body>
-<div class="shell">
-  <header class="top">
-    <div>
-      <div class="brand"><b>IT</b> NOTICED</div>
-      <div class="tagline">before you did</div>
+    <div class="shell">
+        <header class="top">
+            <div>
+                <div class="brand"><b>IT</b> NOTICED</div>
+                <div class="tagline">before you did</div>
+            </div>
+            <div class="top-right">
+                <div class="clock" id="clock">—</div>
+                <button class="gear-btn" id="gearBtn" aria-label="Settings" title="Settings">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="3"></circle>
+                        <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
+                    </svg>
+                </button>
+            </div>
+        </header>
+
+        <nav class="tabs">
+            <button class="tab-btn active" data-screen="now">NOW</button>
+            <button class="tab-btn" data-screen="decision">DECISION</button>
+            <button class="tab-btn" data-screen="morning">DAILY</button>
+            <button class="tab-btn" data-screen="ghost">ALTERNATE</button>
+        </nav>
+
+        <main id="main"></main>
+
+        <footer class="foot" id="footer"></footer>
     </div>
-    <div class="clock" id="clock">—</div>
-  </header>
 
-  <nav class="tabs">
-    <button class="tab-btn active" data-screen="now">ŞİMDİ</button>
-    <button class="tab-btn" data-screen="decision">KARAR</button>
-    <button class="tab-btn" data-screen="morning">GÜNLÜK</button>
-    <button class="tab-btn" data-screen="ghost">GHOST</button>
-  </nav>
+    <div id="modalRoot"></div>
 
-  <main id="main"></main>
+    <script>
+        /* ============ i18n helper ============ */
+        function L(en, tr) { return state.lang === 'tr' ? tr : en; }
 
-  <footer class="foot">DEMO SÜRÜMÜ · VERİ CİHAZDA KALIR · FAZ 0</footer>
-</div>
+        /* ============ CONTENT (language-specific data) ============ */
+        function contentFor(lang) {
+            if (lang === 'tr') {
+                return {
+                    futureTree: [
+                        {
+                            name: 'Embedded', pct: 31, children: [
+                                { name: 'Gömülü Yazılım', pct: 18 }, { name: 'Sensör / IoT', pct: 9 }, { name: 'Robotik', pct: 4 },
+                            ]
+                        },
+                        {
+                            name: 'Mevcut Düzen', pct: 24, children: [
+                                { name: 'Şu Anki İş', pct: 16 }, { name: 'Yan Proje', pct: 8 },
+                            ]
+                        },
+                        {
+                            name: 'Farklı Alan', pct: 18, children: [
+                                { name: 'Veri / AI', pct: 11 }, { name: 'Ürün Yönetimi', pct: 7 },
+                            ]
+                        },
+                        {
+                            name: 'Startup', pct: 15, children: [
+                                { name: 'Kendi Girişimi', pct: 9 }, { name: 'Erken Ekip', pct: 6 },
+                            ]
+                        },
+                        {
+                            name: 'Akademi', pct: 7, children: [
+                                { name: 'Yüksek Lisans', pct: 5 }, { name: 'Araştırma', pct: 2 },
+                            ]
+                        },
+                    ],
+                    pastNodes: [
+                        { id: 'takim', label: 'Takıma katıldın', importanceFirst: 8, importanceNow: 79, date: '14 hafta önce', baglanti: 9, kapsam: 8, fark: 7, sure: 9, duygu: 6 },
+                        { id: 'yurtdisi', label: 'Yurtdışı programına başvurdun', importanceFirst: 22, importanceNow: 64, date: '11 hafta önce', baglanti: 7, kapsam: 6, fark: 8, sure: 6, duygu: 8 },
+                        { id: 'dil', label: 'İkinci dili bıraktın', importanceFirst: 14, importanceNow: 19, date: '9 hafta önce', baglanti: 3, kapsam: 2, fark: 4, sure: 3, duygu: 5 },
+                        { id: 'tasin', label: 'Yeni çevreye taşındın', importanceFirst: 31, importanceNow: 41, date: '6 hafta önce', baglanti: 6, kapsam: 7, fark: 5, sure: 6, duygu: 7 },
+                    ],
+                    categories: ['Kariyer', 'İlişki', 'Sağlık', 'Para', 'Sosyal'],
+                    catToFuture: { 'Kariyer': 'Embedded', 'İlişki': 'Mevcut Düzen', 'Sağlık': 'Farklı Alan', 'Para': 'Startup', 'Sosyal': 'Akademi' },
+                    decisionOptions: ['Çalış', 'Dinlen', 'Dışarı çık'],
+                    decisionHistory: [
+                        { date: 'Dün 21:34', cat: 'Sağlık', text: 'Bu akşam ne yapacaksın?', predicted: 'Dinlen', chosen: 'Çalış', match: false },
+                        { date: 'Dün 13:10', cat: 'Sosyal', text: 'Öğle arasında ne yiyeceksin?', predicted: 'Dışarıda', chosen: 'Dışarıda', match: true },
+                        { date: '2 gün önce', cat: 'Kariyer', text: 'Akşam hangi projeye bakacaksın?', predicted: 'Embedded projesi', chosen: 'Embedded projesi', match: true },
+                        { date: '3 gün önce', cat: 'Para', text: 'Bu ayki fazla bütçeyi ne yapacaksın?', predicted: 'Biriktir', chosen: 'Harca', match: false },
+                    ],
+                    log: [
+                        { time: '21:34', text: 'Bu akşam ne yapacaksın?', chosen: 'Çalış', predicted: 'Dinlen', predictedPct: 67, outcome: null, context: '', moodGuess: 'Yorgun fakat tatmin olmuş', moodConfirmed: null, moodEditing: false },
+                        { time: '13:10', text: 'Öğle arasında ne yiyeceksin?', chosen: 'Dışarıda', predicted: 'Dışarıda', predictedPct: 52, outcome: null, context: '', moodGuess: 'Nötr, aceleci', moodConfirmed: null, moodEditing: false },
+                        { time: '09:02', text: 'Sabah antrenmanı yapacak mısın?', chosen: 'Hayır, ertelendi', predicted: 'Yapacak', predictedPct: 58, outcome: null, context: '', moodGuess: 'Suçluluk hissi hafif', moodConfirmed: null, moodEditing: false },
+                    ],
+                    ghostNodes: [
+                        {
+                            id: 'takim', label: 'Takıma katılmadın', tag: 'Kayıtlı ana kararın alternatifi', timeline: [
+                                { h: '3 AY SONRA', conf: 74, title: 'Teknik ekip deneyimi oluşmadı', body: 'Boşalan zamanın derslere ve başka sosyal çevrelere kayması olası.', extra: 'Kod tabanına aşinalığın daha yavaş oluşur; ilk iş görüşmelerinde ekip projesi örneği eksik kalır.' },
+                                { h: '1 YIL SONRA', conf: 49, title: 'Embedded yönelimi gecikti', body: 'Akademik düzen biraz güçlenebilir; takım bağlantılı fırsatlar azalır.', extra: 'Yüksek lisans başvurusu ihtimali görece yükselir; embedded topluluğuyla bağlantı kurman ortalama 6-8 ay gecikir.' },
+                                { h: '3 YIL SONRA', conf: 21, title: 'Başka bir uzmanlık yolu', body: 'Mevcut teknik çevre ve ilişkinin oluşma ihtimali belirgin biçimde düşer.', extra: 'Bu noktada dallar arasındaki fark artık geri döndürülemez düzeyde büyümüş olur.' },
+                                { h: '10 YIL SONRA', conf: 7, title: 'Yalnızca yaşam aileleri', body: 'Bu uzaklıktaki ayrıntılar spekülatiftir; kesin meslek veya şehir verilmez.', extra: 'Model bu ufukta yalnızca geniş yaşam tarzı kümesi tahmin eder, ayrıntı üretmez.' },
+                            ]
+                        },
+                        {
+                            id: 'yurtdisi', label: 'Yurtdışı programına başvurmadın', tag: 'İkinci büyük dönüm noktası', timeline: [
+                                { h: '3 AY SONRA', conf: 81, title: 'Yerel çevre değişmedi', body: 'Mevcut arkadaş grubu ve iş rutini aynı yoğunlukta devam eder.', extra: 'Günlük rutin gözlemlenebilir biçimde aynı kalır; sapma neredeyse ölçülemez.' },
+                                { h: '1 YIL SONRA', conf: 58, title: 'Dil pratiği zayıf kaldı', body: 'Uluslararası fırsatlara başvuru güveni daha geç oluşabilirdi.', extra: 'Yurt dışı ağırlıklı roller için başvuru eşiği belirgin biçimde yükselir.' },
+                                { h: '3 YIL SONRA', conf: 33, title: 'Kariyer yerelde yoğunlaştı', body: 'Yurtiçi ağ daha erken güçlenir; dışa açılma ihtimali azalır.', extra: 'Yurtiçi referans ağı güçlenir ama uluslararası kapı sayısı azalmış olur.' },
+                                { h: '10 YIL SONRA', conf: 9, title: 'Farklı bir hayat çemberi', body: 'Spekülatif düzeyde; kesin sonuç verilmez.', extra: 'Model bu ufukta ayrıntı üretmekten kaçınır; yalnızca geniş yön belirtir.' },
+                            ]
+                        },
+                        {
+                            id: 'dil', label: 'İkinci dili bırakmadın', tag: 'Küçük, sessiz dönüm noktası', timeline: [
+                                { h: '3 AY SONRA', conf: 68, title: 'Günlük 15 dakika pratik sürdü', body: 'Küçük alışkanlık kesintisiz devam eder; fark başta neredeyse görünmez.', extra: 'Bu dal başlangıçta ana haritada bile görünmeyecek kadar ince kalır.' },
+                                { h: '1 YIL SONRA', conf: 38, title: 'Orta seviye konuşma güveni', body: 'Uluslararası görüşmelerde küçük bir rahatlık farkı oluşur.', extra: 'Yurtdışı dalıyla kesişim olasılığı hafifçe artar.' },
+                                { h: '3 YIL SONRA', conf: 16, title: 'Ek bir kapı aralanır', body: 'Dil, tek başına belirleyici olmasa da bazı fırsatları filtrelemekten çıkarır.', extra: 'Bu noktada dil artık ayrı bir dal değil, diğer dalların içinde sessiz bir çarpandır.' },
+                            ]
+                        },
+                    ]
+                };
+            }
 
-<script>
-/* ============ DATA ============ */
-const futureTree = [
-  { name:'Embedded', pct:31, children:[
-    {name:'Gömülü Yazılım', pct:18},
-    {name:'Sensör / IoT', pct:9},
-    {name:'Robotik', pct:4},
-  ]},
-  { name:'Mevcut Düzen', pct:24, children:[
-    {name:'Şu Anki İş', pct:16},
-    {name:'Yan Proje', pct:8},
-  ]},
-  { name:'Farklı Alan', pct:18, children:[
-    {name:'Veri / AI', pct:11},
-    {name:'Ürün Yönetimi', pct:7},
-  ]},
-  { name:'Startup', pct:15, children:[
-    {name:'Kendi Girişimi', pct:9},
-    {name:'Erken Ekip', pct:6},
-  ]},
-  { name:'Akademi', pct:7, children:[
-    {name:'Yüksek Lisans', pct:5},
-    {name:'Araştırma', pct:2},
-  ]},
-];
-
-const pastNodes = [
-  { id:'takim', label:'Takıma katıldın', importanceFirst:8, importanceNow:79,
-    date:'14 hafta önce', baglanti:9, kapsam:8, fark:7, sure:9, duygu:6 },
-  { id:'yurtdisi', label:'Yurtdışı programına başvurdun', importanceFirst:22, importanceNow:64,
-    date:'11 hafta önce', baglanti:7, kapsam:6, fark:8, sure:6, duygu:8 },
-  { id:'dil', label:'İkinci dili bıraktın', importanceFirst:14, importanceNow:19,
-    date:'9 hafta önce', baglanti:3, kapsam:2, fark:4, sure:3, duygu:5 },
-  { id:'tasin', label:'Yeni çevreye taşındın', importanceFirst:31, importanceNow:41,
-    date:'6 hafta önce', baglanti:6, kapsam:7, fark:5, sure:6, duygu:7 },
-];
-
-const categories = ['Kariyer','İlişki','Sağlık','Para','Sosyal'];
-const catToFuture = {'Kariyer':'Embedded','İlişki':'Mevcut Düzen','Sağlık':'Farklı Alan','Para':'Startup','Sosyal':'Akademi'};
-
-/* ============ STATE (in-memory only, resets on reload) ============ */
-const state = {
-  screen: 'now',
-
-  // now/tree
-  treePath: [],            // e.g. ['Embedded'] when drilled in
-  selectedPast: null,      // id of past node detail open
-  confidenceRising: false,
-
-  // decision
-  decisionOptions: ['Çalış', 'Dinlen', 'Dışarı çık'],
-  decisionText: '',
-  decisionCategory: null,
-  predicted: null,
-  chosen: null,
-  recorded: false,
-  lastBump: null,
-
-  decisionHistory: [
-    {date:'Dün 21:34', cat:'Sağlık', text:'Bu akşam ne yapacaksın?', predicted:'Dinlen', chosen:'Çalış', match:false},
-    {date:'Dün 13:10', cat:'Sosyal', text:'Öğle arasında ne yiyeceksin?', predicted:'Dışarıda', chosen:'Dışarıda', match:true},
-    {date:'2 gün önce', cat:'Kariyer', text:'Akşam hangi projeye bakacaksın?', predicted:'Embedded projesi', chosen:'Embedded projesi', match:true},
-    {date:'3 gün önce', cat:'Para', text:'Bu ayki fazla bütçeyi ne yapacaksın?', predicted:'Biriktir', chosen:'Harca', match:false},
-  ],
-
-  // morning
-  log: [
-    { time:'21:34', text:'Bu akşam ne yapacaksın?', chosen:'Çalış', predicted:'Dinlen', predictedPct:67,
-      outcome:null, context:'', moodGuess:'Yorgun fakat tatmin olmuş', moodConfirmed:null, moodEditing:false },
-    { time:'13:10', text:'Öğle arasında ne yiyeceksin?', chosen:'Dışarıda', predicted:'Dışarıda', predictedPct:52,
-      outcome:null, context:'', moodGuess:'Nötr, aceleci', moodConfirmed:null, moodEditing:false },
-    { time:'09:02', text:'Sabah antrenmanı yapacak mısın?', chosen:'Hayır, ertelendi', predicted:'Yapacak', predictedPct:58,
-      outcome:null, context:'', moodGuess:'Suçluluk hissi hafif', moodConfirmed:null, moodEditing:false },
-  ],
-  treeUpdated:false,
-
-  // ghost
-  ghostActive: null,
-  ghostExpanded: {},
-  ghostNodes: [
-    {id:'takim', label:'Takıma katılmadın', tag:'Kayıtlı ana kararın alternatifi',
-      timeline:[
-        {h:'3 AY SONRA', conf:74, title:'Teknik ekip deneyimi oluşmadı', body:'Boşalan zamanın derslere ve başka sosyal çevrelere kayması olası.', extra:'Kod tabanına aşinalığın daha yavaş oluşur; ilk iş görüşmelerinde ekip projesi örneği eksik kalır.'},
-        {h:'1 YIL SONRA', conf:49, title:'Embedded yönelimi gecikti', body:'Akademik düzen biraz güçlenebilir; takım bağlantılı fırsatlar azalır.', extra:'Yüksek lisans başvurusu ihtimali görece yükselir; embedded topluluğuyla bağlantı kurman ortalama 6-8 ay gecikir.'},
-        {h:'3 YIL SONRA', conf:21, title:'Başka bir uzmanlık yolu', body:'Mevcut teknik çevre ve ilişkinin oluşma ihtimali belirgin biçimde düşer.', extra:'Bu noktada dallar arasındaki fark artık geri döndürülemez düzeyde büyümüş olur.'},
-        {h:'10 YIL SONRA', conf:7, title:'Yalnızca yaşam aileleri', body:'Bu uzaklıktaki ayrıntılar spekülatiftir; kesin meslek veya şehir verilmez.', extra:'Model bu ufukta yalnızca geniş yaşam tarzı kümesi tahmin eder, ayrıntı üretmez.'},
-      ]},
-    {id:'yurtdisi', label:'Yurtdışı programına başvurmadın', tag:'İkinci büyük dönüm noktası',
-      timeline:[
-        {h:'3 AY SONRA', conf:81, title:'Yerel çevre değişmedi', body:'Mevcut arkadaş grubu ve iş rutini aynı yoğunlukta devam eder.', extra:'Günlük rutin gözlemlenebilir biçimde aynı kalır; sapma neredeyse ölçülemez.'},
-        {h:'1 YIL SONRA', conf:58, title:'Dil pratiği zayıf kaldı', body:'Uluslararası fırsatlara başvuru güveni daha geç oluşabilirdi.', extra:'Yurt dışı ağırlıklı roller için başvuru eşiği belirgin biçimde yükselir.'},
-        {h:'3 YIL SONRA', conf:33, title:'Kariyer yerelde yoğunlaştı', body:'Yurtiçi ağ daha erken güçlenir; dışa açılma ihtimali azalır.', extra:'Yurtiçi referans ağı güçlenir ama uluslararası kapı sayısı azalmış olur.'},
-        {h:'10 YIL SONRA', conf:9, title:'Farklı bir hayat çemberi', body:'Spekülatif düzeyde; kesin sonuç verilmez.', extra:'Model bu ufukta ayrıntı üretmekten kaçınır; yalnızca geniş yön belirtir.'},
-      ]},
-    {id:'dil', label:'İkinci dili bırakmadın', tag:'Küçük, sessiz dönüm noktası',
-      timeline:[
-        {h:'3 AY SONRA', conf:68, title:'Günlük 15 dakika pratik sürdü', body:'Küçük alışkanlık kesintisiz devam eder; fark başta neredeyse görünmez.', extra:'Bu dal başlangıçta ana haritada bile görünmeyecek kadar ince kalır.'},
-        {h:'1 YIL SONRA', conf:38, title:'Orta seviye konuşma güveni', body:'Uluslararası görüşmelerde küçük bir rahatlık farkı oluşur.', extra:'Yurtdışı dalıyla kesişim olasılığı hafifçe artar.'},
-        {h:'3 YIL SONRA', conf:16, title:'Ek bir kapı aralanır', body:'Dil, tek başına belirleyici olmasa da bazı fırsatları filtrelemekten çıkarır.', extra:'Bu noktada dil artık ayrı bir dal değil, diğer dalların içinde sessiz bir çarpandır.'},
-      ]},
-  ]
-};
-
-/* ============ CLOCK ============ */
-function tickClock(){
-  const d = new Date();
-  const p = n => String(n).padStart(2,'0');
-  document.getElementById('clock').textContent = p(d.getHours())+':'+p(d.getMinutes())+':'+p(d.getSeconds());
-}
-setInterval(tickClock, 1000); tickClock();
-
-/* ============ NAV ============ */
-document.querySelectorAll('.tab-btn').forEach(btn=>{
-  btn.addEventListener('click', ()=>{ state.screen = btn.dataset.screen; render(); });
-});
-function setActiveTab(){
-  document.querySelectorAll('.tab-btn').forEach(b=>{ b.classList.toggle('active', b.dataset.screen === state.screen); });
-}
-
-/* ============ RENDER ROUTER ============ */
-function render(){
-  setActiveTab();
-  const main = document.getElementById('main');
-  if(state.screen==='now') main.innerHTML = renderNow();
-  if(state.screen==='decision') main.innerHTML = renderDecision();
-  if(state.screen==='morning') main.innerHTML = renderMorning();
-  if(state.screen==='ghost') main.innerHTML = renderGhost();
-  bindScreenEvents();
-}
-
-/* ============ HELPERS ============ */
-function getCurrentLevel(){
-  // returns {parentName, parentPct, nodes[]}
-  if(state.treePath.length===0){
-    return { parentName:null, parentPct:100, nodes: futureTree };
-  }
-  let nodes = futureTree; let parent = null;
-  for(const name of state.treePath){
-    parent = nodes.find(n=>n.name===name);
-    nodes = parent && parent.children ? parent.children : [];
-  }
-  return { parentName: parent ? parent.name : null, parentPct: parent ? parent.pct : 100, nodes };
-}
-
-/* ============ SCREEN: NOW / TREE ============ */
-function renderNow(){
-  const level = getCurrentLevel();
-  const nodes = level.nodes;
-  const total = level.parentPct;
-  const spread = 140;
-  const startAngle = -90 - spread/2;
-  let acc = 0;
-  const sumPct = nodes.reduce((a,f)=>a+f.pct,0) || 1;
-
-  const branches = nodes.map((f)=>{
-    const a = startAngle + (spread * (acc + f.pct/2/sumPct));
-    acc += f.pct/sumPct;
-    const rad = a * Math.PI/180;
-    const shareOfTotal = f.pct; // absolute out of 100 always
-    const len = 92 + (shareOfTotal*1.6);
-    const x2 = 150 + Math.cos(rad)*len;
-    const y2 = 195 + Math.sin(rad)*len;
-    const stroke = 1 + (shareOfTotal/100)*7;
-    const opacity = 0.35 + (shareOfTotal/100)*1.3;
-    return '<line class="branch" data-branch="'+f.name+'" x1="150" y1="195" x2="'+x2.toFixed(1)+'" y2="'+y2.toFixed(1)+'" stroke="var(--ember)" stroke-width="'+stroke.toFixed(1)+'" opacity="'+Math.min(opacity,1).toFixed(2)+'"/>';
-  }).join('');
-
-  const pastBranches = pastNodes.slice(0,4).map((p,i)=>{
-    const bw = 0.8 + (p.importanceNow/100)*2.2;
-    const op = 0.25 + (p.importanceNow/100)*0.5;
-    return '<line class="branch" data-past="'+p.id+'" x1="150" y1="195" x2="'+(150-46+i*30).toFixed(1)+'" y2="'+(195-40-i*8).toFixed(1)+'" stroke="var(--ghost)" stroke-width="'+bw.toFixed(1)+'" opacity="'+op.toFixed(2)+'"/>';
-  }).join('');
-
-  const crumb = state.treePath.length===0
-    ? '<span class="seg current">ŞİMDİ</span>'
-    : '<span class="seg" data-crumb="-1">ŞİMDİ</span>' + state.treePath.map((p,i)=>{
-        const isLast = i===state.treePath.length-1;
-        return '<span class="sep">›</span><span class="seg '+(isLast?'current':'')+'" data-crumb="'+i+'">'+p+'</span>';
-      }).join('');
-
-  let detailBlock = '';
-  if(state.selectedPast){
-    const p = pastNodes.find(x=>x.id===state.selectedPast);
-    if(p){
-      const rows = [
-        ['BAĞLANTI', p.baglanti], ['KAPSAM', p.kapsam], ['FARK', p.fark], ['SÜRE', p.sure], ['DUYGU', p.duygu]
-      ].map(r=>'<div class="criteria-item"><span class="c-label">'+r[0]+'</span><span class="c-track"><span class="c-fill" style="width:'+(r[1]*10)+'%"></span></span><span class="c-val">'+r[1]+'/10</span></div>').join('');
-      detailBlock = '<div class="node-detail">'
-        + '<div class="nd-head"><h4>'+p.label+'</h4><button class="close-x" id="closePast">×</button></div>'
-        + '<div class="nd-body">'
-        + '<div class="growth-line"><span>İLK KAYIT: %'+p.importanceFirst+' önem</span><span class="arrow">→</span><span class="now-val">ŞİMDİ: %'+p.importanceNow+' önem</span></div>'
-        + '<div class="criteria-grid">'+rows+'</div>'
-        + '<div style="font-family:var(--mono); font-size:9.5px; color:var(--bone-dim); margin-top:12px;">'+p.date+' kaydedildi</div>'
-        + '</div></div>';
-    }
-  }
-
-  return ''
-    + '<div class="eyebrow">ŞİMDİKİ BENLİK</div>'
-    + '<h1>Önündeki en olası <em>beş gelecek</em>.</h1>'
-    + '<p class="sub">Bir dalın üzerine tıkla; içinden yayılan daha ince dalları gör. Bir geçmiş düğümüne tıkla; neden büyüdüğünü gör.</p>'
-    + '<div class="crumb">'+crumb+'</div>'
-    + '<div class="tree-wrap"><svg viewBox="0 0 300 260">'
-    + pastBranches + branches
-    + '<circle class="now-core-glow" cx="150" cy="195" r="16"/>'
-    + '<circle class="now-core" cx="150" cy="195" r="7"/>'
-    + '<text x="150" y="222" text-anchor="middle" class="node-label">ŞİMDİ</text>'
-    + '</svg></div>'
-    + '<div class="confidence-row"><span class="k">GÜVEN SEVİYESİ</span><span class="v '+(state.confidenceRising?'rising':'')+'">'+(state.confidenceRising?'ORTA (yükseliyor)':'DÜŞÜK')+'</span></div>'
-    + '<div class="future-list">'
-    + nodes.map(f=>{
-        const hasChildren = f.children && f.children.length>0;
-        return '<div class="future-row" data-future="'+f.name+'">'
-          + '<span class="name">'+f.name+(hasChildren?' <span class="chev">›</span>':'')+'</span>'
-          + '<span class="bar-track"><span class="bar-fill" style="width:'+((f.pct/sumPct)*100)+'%"></span></span>'
-          + '<span class="pct">'+f.pct+'%'+(state.lastBump && state.lastBump.name===f.name ? '<span class="bump">+'+state.lastBump.amount+'</span>' : '')+'</span>'
-          + '</div>';
-      }).join('')
-    + '</div>'
-    + (state.treePath.length===0 ? (
-      '<div class="eyebrow" style="margin-top:22px;">ETKİLİ GEÇMİŞ</div>'
-      + '<div class="past-strip">'
-      + pastNodes.map(p=>'<button class="past-chip '+(state.selectedPast===p.id?'active':'')+'" data-past-chip="'+p.id+'">'+p.label+' · %'+p.importanceNow+'</button>').join('')
-      + '</div>'
-    ) : '')
-    + detailBlock;
-}
-
-/* ============ SCREEN: DECISION ============ */
-function renderDecision(){
-  const optsHtml = state.decisionOptions.map((o,i)=>{
-    const rmBtn = state.decisionOptions.length>2 ? '<button class="rm" data-idx="'+i+'">×</button>' : '';
-    return '<div class="opt-row"><input type="text" value="'+o+'" data-idx="'+i+'" class="opt-input" placeholder="Seçenek '+(i+1)+'"/>'+rmBtn+'</div>';
-  }).join('');
-
-  const catRow = '<div class="cat-row">' + categories.map(c=>'<button class="cat-pill '+(state.decisionCategory===c?'active':'')+'" data-cat="'+c+'">'+c+'</button>').join('') + '</div>';
-
-  let predictBlock = '';
-  if(state.predicted && !state.recorded){
-    predictBlock = '<div class="predicted-block"><div class="predict-tag">AI TAHMİNİ · SEÇECEĞİN SEÇENEK DEĞİL, SEÇME İHTİMALİN</div>'
-      + state.decisionOptions.map(o=>{
-          const isPred = o===state.predicted.name;
-          const pct = isPred ? state.predicted.pct : Math.round((100-state.predicted.pct)/(state.decisionOptions.length-1));
-          return '<div class="choice-row '+(isPred?'is-predicted':'')+' '+(state.chosen===o?'selected':'')+'" data-choice="'+o+'"><span class="c-name">'+o+'</span><span class="c-pct">'+pct+'%</span></div>';
-        }).join('')
-      + '</div>';
-  }
-
-  let recordedBlock = '';
-  if(state.recorded){
-    const future = catToFuture[state.decisionCategory] || null;
-    recordedBlock = '<div class="recorded-box"><div class="rb-top">RECORDED · "'+state.chosen+'" kaydedildi</div>'
-      + (future ? '<div class="rb-effect">Bu karar "'+future+'" dalını +'+(state.lastBump?state.lastBump.amount:1)+' güçlendirdi</div>' : '')
-      + '</div>';
-  }
-
-  const histHtml = state.decisionHistory.map(h=>{
-    return '<div class="hist-item"><span class="hi-mark '+(h.match?'match':'diff')+'">'+(h.match?'✓':'≠')+'</span>'
-      + '<div class="hi-main"><div class="hi-text">'+h.text+'</div><div class="hi-meta">'+h.date+' · tahmin: '+h.predicted+' · seçim: '+h.chosen+'</div></div>'
-      + '<span class="hi-cat">'+h.cat+'</span></div>';
-  }).join('');
-
-  return ''
-    + '<div class="eyebrow">KARAR ANI</div>'
-    + '<h1>Ne yapacaksın?</h1>'
-    + '<p class="sub">Metni yaz, bir kategori seç, en fazla üç seçenek gir. Tahmin, doğru seçeneği değil senin seçme ihtimalini gösterir.</p>'
-    + '<label class="field-label">KARAR</label>'
-    + '<textarea id="decisionText" rows="2" placeholder="Örn. Bu akşam ne yapacaksın?">'+state.decisionText+'</textarea>'
-    + '<label class="field-label" style="margin-top:14px;">BAĞLAM</label>'
-    + catRow
-    + '<label class="field-label" style="margin-top:16px; display:block;">SEÇENEKLER</label>'
-    + '<div id="optsList">'+optsHtml+'</div>'
-    + (state.decisionOptions.length<3 ? '<button class="add-opt" id="addOpt">+ SEÇENEK EKLE</button>' : '')
-    + '<button class="btn" id="predictBtn" '+(state.recorded?'disabled':'')+'>TAHMİN ET</button>'
-    + predictBlock
-    + recordedBlock
-    + '<div class="hist-section"><div class="eyebrow">GEÇMİŞ KARARLAR</div>'+histHtml+'</div>';
-}
-
-/* ============ SCREEN: GÜNLÜK (day-long: pending verification + running today timeline) ============ */
-function renderMorning(){
-  const hour = new Date().getHours();
-  const isMorningWindow = hour < 12;
-  const pending = state.log.filter(i=>!i.outcome);
-  const verified = state.log.filter(i=>i.outcome);
-  const today = state.decisionHistory.filter(h=>h.date==='şimdi');
-
-  // ---- heading, adapts to time of day + what's actually pending ----
-  let eyebrow, heading, sub;
-  if(pending.length>0){
-    eyebrow = isMorningWindow ? 'SABAH DOĞRULAMASI' : 'BEKLEYEN DOĞRULAMA';
-    heading = '<h1>'+(isMorningWindow?'Günaydın. ':'')+'Doğrulanmayı bekleyen <em>'+pending.length+'</em> karar var.</h1>';
-    sub = 'Sonucu doğrula, kısa bağlam ekle, ruh hâli tahminini onayla ya da düzelt.';
-  } else if(today.length>0){
-    eyebrow = 'GÜNLÜK';
-    heading = '<h1>Bugün <em>'+today.length+'</em> karar kaydettin.</h1>';
-    sub = 'Doğrulanacak bir şey yok. Aşağıda bugünün akışı var; yarın sabah sonuçlarını soracağız.';
-  } else {
-    eyebrow = 'GÜNLÜK';
-    heading = '<h1>Henüz bugün bir şey yok.</h1>';
-    sub = 'Karar sekmesinden bir şey kaydettiğinde burada, gün boyunca, birikerek görünür.';
-  }
-
-  // ---- pending verification cards ----
-  const pendingHtml = pending.length===0 ? '' : ('<div class="eyebrow" style="margin-top:4px;">'+(verified.length>0?'KALAN':'BEKLEYEN')+'</div>' +
-    pending.map((item)=>{
-      const idx = state.log.indexOf(item);
-      const moodBlock = item.moodEditing
-        ? '<div class="mood-edit"><input type="text" id="moodInput'+idx+'" value="'+item.moodGuess+'"/><button data-save-mood="'+idx+'">KAYDET</button></div>'
-        : ('<div class="mood-guess"><span class="lbl">RUH HÂLİ TAHMİNİ</span>"'+item.moodGuess+'"'
-          + '<div class="mood-actions"><button data-mood="onayla" data-idx="'+idx+'" class="'+(item.moodConfirmed==='onayla'?'ok':'')+'">ONAYLA</button>'
-          + '<button data-mood="duzelt" data-idx="'+idx+'" class="'+(item.moodConfirmed==='duzelt'?'on':'')+'">DÜZELT</button></div></div>');
-
-      return '<div class="morning-item" data-idx="'+idx+'">'
-        + '<div class="mi-head"><span class="time">'+item.time+'</span><span class="predicted">TAHMİN: '+item.predicted.toUpperCase()+' %'+item.predictedPct+'</span></div>'
-        + '<div class="mi-body">'
-        + '<div class="decision-text">'+item.text+'</div>'
-        + '<div class="chosen">Seçtiğin: '+item.chosen+'</div>'
-        + '<label class="field-label">GERÇEKTE NE OLDU?</label>'
-        + '<div class="outcome-btns">'
-        + '<button data-outcome="tam" class="'+(item.outcome==='tam'?'on':'')+'">Tam olarak yaptım</button>'
-        + '<button data-outcome="kismen" class="'+(item.outcome==='kismen'?'on':'')+'">Kısmen yaptım</button>'
-        + '<button data-outcome="hayir" class="'+(item.outcome==='hayir'?'on':'')+'">Yapmadım</button>'
-        + '</div>'
-        + '<div class="context-field"><label class="field-label">KISA BAĞLAM (isteğe bağlı)</label>'
-        + '<textarea rows="2" data-context-idx="'+idx+'" placeholder="Neden böyle oldu?">'+item.context+'</textarea></div>'
-        + moodBlock
-        + '</div></div>';
-    }).join(''));
-
-  // ---- running "today" timeline, fed by whatever gets recorded on the KARAR tab ----
-  const todayHtml = today.length===0 ? '' : ('<div class="hist-section" style="margin-top:'+(pending.length>0?'30':'6')+'px;">'
-    + '<div class="eyebrow">BUGÜN</div>'
-    + today.map(h=>'<div class="hist-item"><span class="hi-mark '+(h.match?'match':'diff')+'">'+(h.match?'✓':'≠')+'</span>'
-        + '<div class="hi-main"><div class="hi-text">'+h.text+'</div><div class="hi-meta">tahmin: '+h.predicted+' · seçim: '+h.chosen+'</div></div>'
-        + '<span class="hi-cat">'+h.cat+'</span></div>').join('')
-    + '</div>');
-
-  // ---- update-tree action once everything currently pending is cleared ----
-  let updateBlock = '';
-  if(state.log.length>0 && pending.length===0){
-    updateBlock = state.treeUpdated
-      ? '<div class="update-box"><div class="ub-top">AĞAÇ GÜNCELLENDİ</div><div class="ub-sub">Güven seviyesi bir sonraki doğrulamayla birlikte yeniden hesaplanacak.</div></div>'
-      : '<button class="btn" id="updateTreeBtn">AĞACI GÜNCELLE</button>';
-  }
-
-  return ''
-    + '<div class="eyebrow">'+eyebrow+'</div>'
-    + heading
-    + '<p class="sub">'+sub+'</p>'
-    + pendingHtml
-    + todayHtml
-    + (today.length===0 && pending.length===0 ? '<div class="empty-note">Henüz bugün için kaydedilmiş karar yok.</div>' : '')
-    + updateBlock;
-}
-
-/* ============ SCREEN: GHOST ============ */
-function renderGhost(){
-  if(!state.ghostActive) state.ghostActive = state.ghostNodes[0].id;
-  const active = state.ghostNodes.find(n=>n.id===state.ghostActive);
-
-  const cards = active.timeline.map((t,i)=>{
-    const key = active.id+'-'+i;
-    const expanded = !!state.ghostExpanded[key];
-    return '<div class="ghost-card" data-ghost-card="'+key+'">'
-      + '<div class="gh-meta">'+t.h+' · <span class="conf">GÜVEN %'+t.conf+'</span></div>'
-      + '<h3>'+t.title+'</h3><p>'+t.body+'</p>'
-      + (expanded ? '<div class="gh-extra">'+t.extra+'</div>' : '')
-      + '<div class="gh-toggle">'+(expanded?'− daralt':'+ detay')+'</div>'
-      + '</div>';
-  }).join('');
-
-  return ''
-    + '<div class="eyebrow">ALTERNATİF GEÇMİŞ</div>'
-    + '<h1>Geçmiş değişmez. <em>Alternatifi</em> yalnızca izlenir.</h1>'
-    + '<p class="sub">Bir dönüm noktası seç; sistem o noktadan farklı bir yaşamı simüle etsin. Kartlara tıklayarak detay aç.</p>'
-    + '<div class="divergence-select">'
-    + state.ghostNodes.map(n=>'<button data-ghost="'+n.id+'" class="'+(n.id===state.ghostActive?'active':'')+'">'+n.label+'<span class="tag">'+n.tag+'</span></button>').join('')
-    + '</div>'
-    + '<div class="ghost-header">DIVERGENCE · '+active.label.toUpperCase()+'</div>'
-    + cards
-    + '<div class="ghost-quote">"Bu hayatın daha iyi olup olmadığını hesaplayamam.<br>Yalnızca daha farklı olduğunu hesaplayabilirim."</div>';
-}
-
-/* ============ EVENTS PER SCREEN ============ */
-function bindScreenEvents(){
-
-  if(state.screen==='now'){
-    document.querySelectorAll('[data-future]').forEach(row=>{
-      row.addEventListener('click', ()=>{
-        const name = row.dataset.future;
-        const level = getCurrentLevel();
-        const node = level.nodes.find(n=>n.name===name);
-        if(node && node.children && node.children.length){
-          state.treePath.push(name);
-          state.selectedPast = null;
-          render();
+            // default: English
+            return {
+                futureTree: [
+                    {
+                        name: 'Embedded', pct: 31, children: [
+                            { name: 'Embedded Software', pct: 18 }, { name: 'Sensors / IoT', pct: 9 }, { name: 'Robotics', pct: 4 },
+                        ]
+                    },
+                    {
+                        name: 'Current Path', pct: 24, children: [
+                            { name: 'Current Job', pct: 16 }, { name: 'Side Project', pct: 8 },
+                        ]
+                    },
+                    {
+                        name: 'Different Field', pct: 18, children: [
+                            { name: 'Data / AI', pct: 11 }, { name: 'Product Management', pct: 7 },
+                        ]
+                    },
+                    {
+                        name: 'Startup', pct: 15, children: [
+                            { name: 'Own Venture', pct: 9 }, { name: 'Early Team Member', pct: 6 },
+                        ]
+                    },
+                    {
+                        name: 'Academia', pct: 7, children: [
+                            { name: 'Grad School', pct: 5 }, { name: 'Research', pct: 2 },
+                        ]
+                    },
+                ],
+                pastNodes: [
+                    { id: 'takim', label: 'You joined the team', importanceFirst: 8, importanceNow: 79, date: '14 weeks ago', baglanti: 9, kapsam: 8, fark: 7, sure: 9, duygu: 6 },
+                    { id: 'yurtdisi', label: 'You applied to the program abroad', importanceFirst: 22, importanceNow: 64, date: '11 weeks ago', baglanti: 7, kapsam: 6, fark: 8, sure: 6, duygu: 8 },
+                    { id: 'dil', label: 'You dropped the second language', importanceFirst: 14, importanceNow: 19, date: '9 weeks ago', baglanti: 3, kapsam: 2, fark: 4, sure: 3, duygu: 5 },
+                    { id: 'tasin', label: 'You moved into a new circle', importanceFirst: 31, importanceNow: 41, date: '6 weeks ago', baglanti: 6, kapsam: 7, fark: 5, sure: 6, duygu: 7 },
+                ],
+                categories: ['Career', 'Relationship', 'Health', 'Money', 'Social'],
+                catToFuture: { 'Career': 'Embedded', 'Relationship': 'Current Path', 'Health': 'Different Field', 'Money': 'Startup', 'Social': 'Academia' },
+                decisionOptions: ['Work', 'Rest', 'Go out'],
+                decisionHistory: [
+                    { date: 'Yesterday 21:34', cat: 'Health', text: 'What will you do tonight?', predicted: 'Rest', chosen: 'Work', match: false },
+                    { date: 'Yesterday 13:10', cat: 'Social', text: 'What will you eat for lunch?', predicted: 'Eat out', chosen: 'Eat out', match: true },
+                    { date: '2 days ago', cat: 'Career', text: 'Which project will you work on tonight?', predicted: 'Embedded project', chosen: 'Embedded project', match: true },
+                    { date: '3 days ago', cat: 'Money', text: "What will you do with this month's extra budget?", predicted: 'Save it', chosen: 'Spend it', match: false },
+                ],
+                log: [
+                    { time: '21:34', text: 'What will you do tonight?', chosen: 'Work', predicted: 'Rest', predictedPct: 67, outcome: null, context: '', moodGuess: 'Tired but satisfied', moodConfirmed: null, moodEditing: false },
+                    { time: '13:10', text: 'What will you eat for lunch?', chosen: 'Eat out', predicted: 'Eat out', predictedPct: 52, outcome: null, context: '', moodGuess: 'Neutral, a bit rushed', moodConfirmed: null, moodEditing: false },
+                    { time: '09:02', text: 'Will you do your morning workout?', chosen: "No, postponed", predicted: 'Will do it', predictedPct: 58, outcome: null, context: '', moodGuess: 'Slight guilt', moodConfirmed: null, moodEditing: false },
+                ],
+                ghostNodes: [
+                    {
+                        id: 'takim', label: "You didn't join the team", tag: 'Alternate to your logged decision', timeline: [
+                            { h: '3 MONTHS LATER', conf: 74, title: 'No team engineering experience formed', body: 'The freed-up time likely shifts toward classes and other social circles.', extra: 'Codebase familiarity builds more slowly; early interviews miss a team-project example.' },
+                            { h: '1 YEAR LATER', conf: 49, title: 'Embedded direction delayed', body: 'Academic structure may strengthen slightly; team-linked opportunities shrink.', extra: 'Grad-school odds rise somewhat; connecting with the embedded community lags 6-8 months.' },
+                            { h: '3 YEARS LATER', conf: 21, title: 'A different specialty path', body: 'The odds of the current technical circle and relationship forming drop noticeably.', extra: 'At this point the gap between branches has grown effectively irreversible.' },
+                            { h: '10 YEARS LATER', conf: 7, title: 'Only broad life families', body: 'Details this far out are speculative; no exact job or city is given.', extra: 'At this horizon the model only predicts a broad lifestyle cluster, not detail.' },
+                        ]
+                    },
+                    {
+                        id: 'yurtdisi', label: "You didn't apply abroad", tag: 'Second major turning point', timeline: [
+                            { h: '3 MONTHS LATER', conf: 81, title: 'Local circle unchanged', body: 'Your current friend group and work routine continue at the same intensity.', extra: 'Daily routine stays observably the same; the deviation is barely measurable.' },
+                            { h: '1 YEAR LATER', conf: 58, title: 'Language practice stayed weak', body: 'Confidence applying to international opportunities could form later.', extra: 'The application bar for internationally-weighted roles rises noticeably.' },
+                            { h: '3 YEARS LATER', conf: 33, title: 'Career concentrated locally', body: 'Your domestic network strengthens earlier; the odds of going abroad shrink.', extra: 'The domestic reference network strengthens, but the number of international doors shrinks.' },
+                            { h: '10 YEARS LATER', conf: 9, title: 'A different circle of life', body: 'Speculative level; no firm outcome given.', extra: 'The model avoids producing detail at this horizon; it only signals a broad direction.' },
+                        ]
+                    },
+                    {
+                        id: 'dil', label: "You didn't drop the second language", tag: 'A small, quiet turning point', timeline: [
+                            { h: '3 MONTHS LATER', conf: 68, title: '15 minutes of daily practice continued', body: 'The small habit continues uninterrupted; the difference is nearly invisible at first.', extra: 'This branch would initially be too thin to even appear on the main map.' },
+                            { h: '1 YEAR LATER', conf: 38, title: 'Mid-level conversational confidence', body: 'A small comfort gap forms in international conversations.', extra: 'The odds of intersecting with the "abroad" branch rise slightly.' },
+                            { h: '3 YEARS LATER', conf: 16, title: 'One extra door opens slightly', body: "The language alone isn't decisive, but it stops filtering out some opportunities.", extra: "At this point the language is no longer a separate branch — it's a quiet multiplier inside the others." },
+                        ]
+                    },
+                ]
+            };
         }
-      });
-    });
-    document.querySelectorAll('[data-crumb]').forEach(seg=>{
-      seg.addEventListener('click', ()=>{
-        const idx = +seg.dataset.crumb;
-        state.treePath = idx===-1 ? [] : state.treePath.slice(0, idx+1);
-        render();
-      });
-    });
-    document.querySelectorAll('[data-past-chip]').forEach(chip=>{
-      chip.addEventListener('click', ()=>{
-        const id = chip.dataset.pastChip;
-        state.selectedPast = state.selectedPast===id ? null : id;
-        render();
-      });
-    });
-    document.querySelectorAll('[data-past]').forEach(branch=>{
-      branch.addEventListener('click', ()=>{
-        const id = branch.dataset.past;
-        state.selectedPast = state.selectedPast===id ? null : id;
-        render();
-      });
-    });
-    const closePast = document.getElementById('closePast');
-    if(closePast) closePast.addEventListener('click', ()=>{ state.selectedPast=null; render(); });
-  }
 
-  if(state.screen==='decision'){
-    const dt = document.getElementById('decisionText');
-    if(dt) dt.addEventListener('input', e=>{ state.decisionText = e.target.value; });
+        /* ============ MUTABLE MODULE-LEVEL CONTENT (swapped on language change) ============ */
+        let futureTree, pastNodes, categories, catToFuture, ghostNodes;
 
-    document.querySelectorAll('[data-cat]').forEach(pill=>{
-      pill.addEventListener('click', e=>{
-        state.decisionCategory = pill.dataset.cat === state.decisionCategory ? null : pill.dataset.cat;
-        render();
-      });
-    });
-
-    document.querySelectorAll('.opt-input').forEach(inp=>{
-      inp.addEventListener('input', e=>{ state.decisionOptions[+e.target.dataset.idx] = e.target.value; });
-    });
-    document.querySelectorAll('.rm').forEach(b=>{
-      b.addEventListener('click', e=>{ state.decisionOptions.splice(+e.target.dataset.idx,1); render(); });
-    });
-    const addOpt = document.getElementById('addOpt');
-    if(addOpt) addOpt.addEventListener('click', ()=>{
-      if(state.decisionOptions.length<3){ state.decisionOptions.push(''); render(); }
-    });
-
-    const predictBtn = document.getElementById('predictBtn');
-    if(predictBtn) predictBtn.addEventListener('click', ()=>{
-      const valid = state.decisionOptions.filter(o=>o.trim().length>0);
-      if(valid.length<2) return;
-      const pickIdx = Math.floor(Math.random()*valid.length);
-      const pct = 42 + Math.floor(Math.random()*34);
-      state.predicted = {name: valid[pickIdx], pct};
-      state.chosen = null;
-      state.recorded = false;
-      render();
-    });
-
-    document.querySelectorAll('.choice-row').forEach(row=>{
-      row.addEventListener('click', ()=>{
-        state.chosen = row.dataset.choice;
-        state.recorded = true;
-
-        // nudge the linked future branch + log to history
-        if(state.decisionCategory){
-          const futureName = catToFuture[state.decisionCategory];
-          const top = futureTree.find(n=>n.name===futureName);
-          if(top){
-            const amount = 1 + Math.floor(Math.random()*2);
-            top.pct += amount;
-            state.lastBump = {name: futureName, amount};
-          }
+        function loadContent(lang) {
+            const c = contentFor(lang);
+            futureTree = c.futureTree;
+            pastNodes = c.pastNodes;
+            categories = c.categories;
+            catToFuture = c.catToFuture;
+            ghostNodes = c.ghostNodes;
+            state.lang = lang;
+            state.treePath = [];
+            state.selectedPast = null;
+            state.confidenceRising = false;
+            state.decisionOptions = [...c.decisionOptions];
+            state.decisionText = '';
+            state.decisionCategory = null;
+            state.predicted = null;
+            state.chosen = null;
+            state.recorded = false;
+            state.lastBump = null;
+            state.decisionHistory = c.decisionHistory.map(x => ({ ...x }));
+            state.log = c.log.map(x => ({ ...x }));
+            state.treeUpdated = false;
+            state.ghostActive = null;
+            state.ghostExpanded = {};
         }
-        state.decisionHistory.unshift({
-          date:'şimdi', cat: state.decisionCategory || '—',
-          text: state.decisionText || '(başlıksız karar)',
-          predicted: state.predicted.name, chosen: state.chosen,
-          match: state.predicted.name === state.chosen
+
+        /* ============ STATE ============ */
+        const state = {
+            lang: 'en',
+            screen: 'now',
+            settingsOpen: false,
+            treePath: [],
+            selectedPast: null,
+            confidenceRising: false,
+            decisionOptions: [],
+            decisionText: '',
+            decisionCategory: null,
+            predicted: null,
+            chosen: null,
+            recorded: false,
+            lastBump: null,
+            decisionHistory: [],
+            log: [],
+            treeUpdated: false,
+            ghostActive: null,
+            ghostExpanded: {},
+        };
+        loadContent('en');
+
+        /* ============ CLOCK ============ */
+        function tickClock() {
+            const d = new Date();
+            const p = n => String(n).padStart(2, '0');
+            document.getElementById('clock').textContent = p(d.getHours()) + ':' + p(d.getMinutes()) + ':' + p(d.getSeconds());
+        }
+        setInterval(tickClock, 1000); tickClock();
+
+        /* ============ NAV ============ */
+        document.querySelectorAll('.tab-btn').forEach(btn => {
+            btn.addEventListener('click', () => { state.screen = btn.dataset.screen; render(); });
         });
-        render();
-      });
-    });
-  }
+        function setActiveTab() {
+            document.querySelectorAll('.tab-btn').forEach(b => { b.classList.toggle('active', b.dataset.screen === state.screen); });
+        }
 
-  if(state.screen==='morning'){
-    document.querySelectorAll('.outcome-btns button').forEach(b=>{
-      b.addEventListener('click', e=>{
-        const idx = +e.target.closest('.morning-item').dataset.idx;
-        state.log[idx].outcome = e.target.dataset.outcome;
-        render();
-      });
-    });
-    document.querySelectorAll('[data-context-idx]').forEach(ta=>{
-      ta.addEventListener('input', e=>{ state.log[+e.target.dataset.contextIdx].context = e.target.value; });
-    });
-    document.querySelectorAll('.mood-actions button').forEach(b=>{
-      b.addEventListener('click', e=>{
-        const idx = +e.target.dataset.idx;
-        if(e.target.dataset.mood==='duzelt'){ state.log[idx].moodEditing = true; }
-        else { state.log[idx].moodConfirmed = 'onayla'; }
-        render();
-      });
-    });
-    document.querySelectorAll('[data-save-mood]').forEach(b=>{
-      b.addEventListener('click', e=>{
-        const idx = +e.target.dataset.saveMood;
-        const val = document.getElementById('moodInput'+idx).value;
-        state.log[idx].moodGuess = val;
-        state.log[idx].moodEditing = false;
-        state.log[idx].moodConfirmed = 'duzelt';
-        render();
-      });
-    });
-    const updateBtn = document.getElementById('updateTreeBtn');
-    if(updateBtn) updateBtn.addEventListener('click', ()=>{
-      state.treeUpdated = true;
-      state.confidenceRising = true;
-      render();
-    });
-  }
+        /* ============ SETTINGS MODAL ============ */
+        document.getElementById('gearBtn').addEventListener('click', () => { state.settingsOpen = true; renderModal(); });
 
-  if(state.screen==='ghost'){
-    document.querySelectorAll('[data-ghost]').forEach(b=>{
-      b.addEventListener('click', e=>{
-        state.ghostActive = e.target.closest('[data-ghost]').dataset.ghost;
-        render();
-      });
-    });
-    document.querySelectorAll('[data-ghost-card]').forEach(card=>{
-      card.addEventListener('click', ()=>{
-        const key = card.dataset.ghostCard;
-        state.ghostExpanded[key] = !state.ghostExpanded[key];
-        render();
-      });
-    });
-  }
-}
+        function renderModal() {
+            const root = document.getElementById('modalRoot');
+            if (!state.settingsOpen) { root.innerHTML = ''; return; }
+            root.innerHTML = ''
+                + '<div class="modal-backdrop" id="modalBackdrop">'
+                + '<div class="modal-box">'
+                + '<div class="modal-head"><span>' + L('LANGUAGE', 'DİL') + '</span><button id="modalClose">×</button></div>'
+                + '<div class="modal-body">'
+                + '<button class="lang-opt ' + (state.lang === 'en' ? 'active' : '') + '" data-lang="en">English<span class="check">' + (state.lang === 'en' ? '●' : '') + '</span></button>'
+                + '<button class="lang-opt ' + (state.lang === 'tr' ? 'active' : '') + '" data-lang="tr">Türkçe<span class="check">' + (state.lang === 'tr' ? '●' : '') + '</span></button>'
+                + '</div></div></div>';
 
-render();
-</script>
+            document.getElementById('modalBackdrop').addEventListener('click', (e) => {
+                if (e.target.id === 'modalBackdrop') { state.settingsOpen = false; renderModal(); }
+            });
+            document.getElementById('modalClose').addEventListener('click', () => { state.settingsOpen = false; renderModal(); });
+            document.querySelectorAll('[data-lang]').forEach(b => {
+                b.addEventListener('click', () => {
+                    const lang = b.dataset.lang;
+                    if (lang !== state.lang) { loadContent(lang); }
+                    state.settingsOpen = false;
+                    renderModal();
+                    render();
+                });
+            });
+        }
+
+        /* ============ RENDER ROUTER ============ */
+        function render() {
+            setActiveTab();
+            document.getElementById('footer').textContent = L('DEMO VERSION · DATA STAYS ON DEVICE · PHASE 0', 'DEMO SÜRÜMÜ · VERİ CİHAZDA KALIR · FAZ 0');
+            const main = document.getElementById('main');
+            if (state.screen === 'now') main.innerHTML = renderNow();
+            if (state.screen === 'decision') main.innerHTML = renderDecision();
+            if (state.screen === 'morning') main.innerHTML = renderMorning();
+            if (state.screen === 'ghost') main.innerHTML = renderGhost();
+            bindScreenEvents();
+        }
+
+        /* ============ HELPERS ============ */
+        function getCurrentLevel() {
+            if (state.treePath.length === 0) { return { parentName: null, parentPct: 100, nodes: futureTree }; }
+            let nodes = futureTree; let parent = null;
+            for (const name of state.treePath) {
+                parent = nodes.find(n => n.name === name);
+                nodes = parent && parent.children ? parent.children : [];
+            }
+            return { parentName: parent ? parent.name : null, parentPct: parent ? parent.pct : 100, nodes };
+        }
+
+        /* ============ SCREEN: NOW / TREE ============ */
+        /* ============ organic branch geometry helpers ============ */
+        function polarPt(cx, cy, angleDeg, r) {
+            const rad = angleDeg * Math.PI / 180;
+            return [cx + Math.cos(rad) * r, cy + Math.sin(rad) * r];
+        }
+        function bezierPt(p0, p1, p2, t) {
+            const mt = 1 - t;
+            return [mt * mt * p0[0] + 2 * mt * t * p1[0] + t * t * p2[0], mt * mt * p0[1] + 2 * mt * t * p1[1] + t * t * p2[1]];
+        }
+        // builds one curved branch (as a quadratic path) plus a couple of small forking twigs along it
+        function buildBranch(opts) {
+            const { x1, y1, angle, len, color, width, opacity, dataAttr, twigs } = opts;
+            const p0 = [x1, y1];
+            const p2 = polarPt(x1, y1, angle, len);
+            const bendSign = (((angle + 450) % 360) - 180) < 0 ? -1 : 1; // curve away from vertical, left/right depending on side
+            const mid = polarPt(x1, y1, angle, len * 0.5);
+            const p1 = polarPt(mid[0], mid[1], angle - 90, 12 * bendSign);
+            const d = 'M' + p0[0].toFixed(1) + ',' + p0[1].toFixed(1) + ' Q' + p1[0].toFixed(1) + ',' + p1[1].toFixed(1) + ' ' + p2[0].toFixed(1) + ',' + p2[1].toFixed(1);
+            let out = '<path class="branch" ' + dataAttr + ' d="' + d + '" fill="none" stroke="' + color + '" stroke-width="' + width.toFixed(1) + '" stroke-linecap="round" opacity="' + opacity + '"/>';
+
+            if (twigs) {
+                [[0.52, 26, 0.34], [0.78, -20, 0.24]].forEach(([t, angOff, lenRatio]) => {
+                    const origin = bezierPt(p0, p1, p2, t);
+                    const tw = polarPt(origin[0], origin[1], angle + angOff, len * lenRatio);
+                    out += '<line class="twig" style="pointer-events:none" x1="' + origin[0].toFixed(1) + '" y1="' + origin[1].toFixed(1) + '" x2="' + tw[0].toFixed(1) + '" y2="' + tw[1].toFixed(1) + '" stroke="' + color + '" stroke-width="' + Math.max(1, width * 0.45).toFixed(1) + '" stroke-linecap="round" opacity="' + (opacity * 0.7).toFixed(2) + '"/>';
+                });
+            }
+            return out;
+        }
+
+        function renderNow() {
+            const level = getCurrentLevel();
+            const nodes = level.nodes;
+            const spread = 140;
+            const startAngle = -90 - spread / 2;
+            let acc = 0;
+            const sumPct = nodes.reduce((a, f) => a + f.pct, 0) || 1;
+            const topPct = Math.max(...nodes.map(n => n.pct));
+
+            const TRUNK_LEN = 24;
+            const trunkTop = polarPt(150, 195, -90, TRUNK_LEN);
+            const trunk = '<line x1="150" y1="195" x2="' + trunkTop[0].toFixed(1) + '" y2="' + trunkTop[1].toFixed(1) + '" stroke="var(--bone-dim)" stroke-width="2.4" stroke-linecap="round" opacity="0.55"/>';
+
+            const branches = nodes.map((f) => {
+                const a = startAngle + (spread * (acc + f.pct / 2 / sumPct));
+                acc += f.pct / sumPct;
+                const shareOfTotal = f.pct;
+                const len = 78 + (shareOfTotal * 1.5);
+                const stroke = 1 + (shareOfTotal / 100) * 6.5;
+                const isSelected = f.pct === topPct;
+                const color = isSelected ? 'var(--ember)' : 'var(--branch-dim)';
+                const opacity = isSelected ? 1 : 0.75;
+                return buildBranch({ x1: trunkTop[0], y1: trunkTop[1], angle: a, len, color, width: stroke, opacity, dataAttr: 'data-branch="' + f.name + '"', twigs: true });
+            }).join('');
+
+            const pastTrunkTop = polarPt(150, 195, -90, 14);
+            const pastBranches = pastNodes.slice(0, 4).map((p, i) => {
+                const bw = 0.8 + (p.importanceNow / 100) * 2.0;
+                const op = 0.25 + (p.importanceNow / 100) * 0.45;
+                const angle = -140 + i * 16;
+                const len = 58 + (p.importanceNow / 100) * 40;
+                return buildBranch({ x1: pastTrunkTop[0], y1: pastTrunkTop[1], angle, len, color: 'var(--ghost)', width: bw, opacity: op, dataAttr: 'data-past="' + p.id + '"', twigs: false });
+            }).join('');
+
+            const crumb = state.treePath.length === 0
+                ? '<span class="seg current">' + L('NOW', 'ŞİMDİ') + '</span>'
+                : '<span class="seg" data-crumb="-1">' + L('NOW', 'ŞİMDİ') + '</span>' + state.treePath.map((p, i) => {
+                    const isLast = i === state.treePath.length - 1;
+                    return '<span class="sep">›</span><span class="seg ' + (isLast ? 'current' : '') + '" data-crumb="' + i + '">' + p + '</span>';
+                }).join('');
+
+            let detailBlock = '';
+            if (state.selectedPast) {
+                const p = pastNodes.find(x => x.id === state.selectedPast);
+                if (p) {
+                    const rows = [
+                        [L('CONNECTION', 'BAĞLANTI'), p.baglanti], [L('SCOPE', 'KAPSAM'), p.kapsam], [L('DELTA', 'FARK'), p.fark],
+                        [L('DURATION', 'SÜRE'), p.sure], [L('EMOTION', 'DUYGU'), p.duygu]
+                    ].map(r => '<div class="criteria-item"><span class="c-label">' + r[0] + '</span><span class="c-track"><span class="c-fill" style="width:' + (r[1] * 10) + '%"></span></span><span class="c-val">' + r[1] + '/10</span></div>').join('');
+                    detailBlock = '<div class="node-detail">'
+                        + '<div class="nd-head"><h4>' + p.label + '</h4><button class="close-x" id="closePast">×</button></div>'
+                        + '<div class="nd-body">'
+                        + '<div class="growth-line"><span>' + L('FIRST LOGGED', 'İLK KAYIT') + ': ' + p.importanceFirst + '% ' + L('weight', 'önem') + '</span><span class="arrow">→</span><span class="now-val">' + L('NOW', 'ŞİMDİ') + ': ' + p.importanceNow + '% ' + L('weight', 'önem') + '</span></div>'
+                        + '<div class="criteria-grid">' + rows + '</div>'
+                        + '<div style="font-family:var(--mono); font-size:9.5px; color:var(--bone-dim); margin-top:12px;">' + L('logged ' + p.date, p.date + ' kaydedildi') + '</div>'
+                        + '</div></div>';
+                }
+            }
+
+            return ''
+                + '<div class="eyebrow">' + L('CURRENT SELF', 'ŞİMDİKİ BENLİK') + '</div>'
+                + '<h1>' + L('The five most likely <em>futures</em> ahead of you.', 'Önündeki en olası <em>beş gelecek</em>.') + '</h1>'
+                + '<p class="sub">' + L('Tap a branch to see the finer branches inside it. Tap a past node to see why it grew.', 'Bir dala tıkla; içinden yayılan daha ince dalları gör. Bir geçmiş düğümüne tıkla; neden büyüdüğünü gör.') + '</p>'
+                + '<div class="crumb">' + crumb + '</div>'
+                + '<div class="tree-wrap"><svg viewBox="0 0 300 260">'
+                + pastBranches + trunk + branches
+                + '<circle class="now-core-glow" cx="150" cy="195" r="16"/>'
+                + '<circle class="now-core" cx="150" cy="195" r="7"/>'
+                + '<text x="150" y="222" text-anchor="middle" class="node-label">' + L('NOW', 'ŞİMDİ') + '</text>'
+                + '</svg></div>'
+                + '<div class="legend-row"><span><span class="dot on"></span>' + L('the path you\'re on', 'şu an içinde olduğun yol') + '</span><span><span class="dot off"></span>' + L('not selected', 'seçilmeyen') + '</span></div>'
+                + '<div class="confidence-row"><span class="k">' + L('CONFIDENCE LEVEL', 'GÜVEN SEVİYESİ') + '</span><span class="v ' + (state.confidenceRising ? 'rising' : '') + '">' + (state.confidenceRising ? L('MEDIUM (rising)', 'ORTA (yükseliyor)') : L('LOW', 'DÜŞÜK')) + '</span></div>'
+                + '<div class="future-list">'
+                + nodes.map(f => {
+                    const hasChildren = f.children && f.children.length > 0;
+                    const isSelected = f.pct === topPct;
+                    return '<div class="future-row" data-future="' + f.name + '">'
+                        + '<span class="name">' + f.name + (hasChildren ? ' <span class="chev">›</span>' : '') + '</span>'
+                        + '<span class="bar-track"><span class="bar-fill ' + (isSelected ? 'on' : 'off') + '" style="width:' + ((f.pct / sumPct) * 100) + '%"></span></span>'
+                        + '<span class="pct ' + (isSelected ? 'on' : 'off') + '">' + f.pct + '%' + (state.lastBump && state.lastBump.name === f.name ? '<span class="bump">+' + state.lastBump.amount + '</span>' : '') + '</span>'
+                        + '</div>';
+                }).join('')
+                + '</div>'
+                + (state.treePath.length === 0 ? (
+                    '<div class="eyebrow" style="margin-top:22px;">' + L('EFFECTIVE PAST', 'ETKİLİ GEÇMİŞ') + '</div>'
+                    + '<div class="past-strip">'
+                    + pastNodes.map(p => '<button class="past-chip ' + (state.selectedPast === p.id ? 'active' : '') + '" data-past-chip="' + p.id + '">' + p.label + ' · ' + p.importanceNow + '%</button>').join('')
+                    + '</div>'
+                ) : '')
+                + detailBlock;
+        }
+
+        /* ============ SCREEN: DECISION ============ */
+        function renderDecision() {
+            const optsHtml = state.decisionOptions.map((o, i) => {
+                const rmBtn = state.decisionOptions.length > 2 ? '<button class="rm" data-idx="' + i + '">×</button>' : '';
+                return '<div class="opt-row"><input type="text" value="' + o + '" data-idx="' + i + '" class="opt-input" placeholder="' + L('Option', 'Seçenek') + ' ' + (i + 1) + '"/>' + rmBtn + '</div>';
+            }).join('');
+
+            const catRow = '<div class="cat-row">' + categories.map(c => '<button class="cat-pill ' + (state.decisionCategory === c ? 'active' : '') + '" data-cat="' + c + '">' + c + '</button>').join('') + '</div>';
+
+            let predictBlock = '';
+            if (state.predicted && !state.recorded) {
+                predictBlock = '<div class="predicted-block"><div class="predict-tag">' + L('AI PREDICTION · YOUR ODDS OF PICKING IT, NOT THE RIGHT ANSWER', 'AI TAHMİNİ · SEÇECEĞİN SEÇENEK DEĞİL, SEÇME İHTİMALİN') + '</div>'
+                    + state.decisionOptions.map(o => {
+                        const isPred = o === state.predicted.name;
+                        const pct = isPred ? state.predicted.pct : Math.round((100 - state.predicted.pct) / (state.decisionOptions.length - 1));
+                        return '<div class="choice-row ' + (isPred ? 'is-predicted' : '') + ' ' + (state.chosen === o ? 'selected' : '') + '" data-choice="' + o + '"><span class="c-name">' + o + '</span><span class="c-pct">' + pct + '%</span></div>';
+                    }).join('')
+                    + '</div>';
+            }
+
+            let recordedBlock = '';
+            if (state.recorded) {
+                const future = catToFuture[state.decisionCategory] || null;
+                recordedBlock = '<div class="recorded-box"><div class="rb-top">RECORDED · "' + state.chosen + '"</div>'
+                    + (future ? '<div class="rb-effect">' + L('This decision strengthened "' + future + '" by +' + (state.lastBump ? state.lastBump.amount : 1), 'Bu karar "' + future + '" dalını +' + (state.lastBump ? state.lastBump.amount : 1) + ' güçlendirdi') + '</div>' : '')
+                    + '</div>';
+            }
+
+            const histHtml = state.decisionHistory.map(h => {
+                return '<div class="hist-item"><span class="hi-mark ' + (h.match ? 'match' : 'diff') + '">' + (h.match ? '✓' : '≠') + '</span>'
+                    + '<div class="hi-main"><div class="hi-text">' + h.text + '</div><div class="hi-meta">' + h.date + ' · ' + L('predicted', 'tahmin') + ': ' + h.predicted + ' · ' + L('chose', 'seçim') + ': ' + h.chosen + '</div></div>'
+                    + '<span class="hi-cat">' + h.cat + '</span></div>';
+            }).join('');
+
+            return ''
+                + '<div class="eyebrow">' + L('DECISION POINT', 'KARAR ANI') + '</div>'
+                + '<h1>' + L('What will you do?', 'Ne yapacaksın?') + '</h1>'
+                + '<p class="sub">' + L('Write it down, pick a context, add up to three options. The prediction is your odds of picking it, not the right answer.', 'Metni yaz, bir bağlam seç, en fazla üç seçenek gir. Tahmin, doğru seçeneği değil senin seçme ihtimalini gösterir.') + '</p>'
+                + '<label class="field-label">' + L('DECISION', 'KARAR') + '</label>'
+                + '<textarea id="decisionText" rows="2" placeholder="' + L('e.g. What will you do tonight?', 'Örn. Bu akşam ne yapacaksın?') + '">' + state.decisionText + '</textarea>'
+                + '<label class="field-label" style="margin-top:14px;">' + L('CONTEXT', 'BAĞLAM') + '</label>'
+                + catRow
+                + '<label class="field-label" style="margin-top:16px; display:block;">' + L('OPTIONS', 'SEÇENEKLER') + '</label>'
+                + '<div id="optsList">' + optsHtml + '</div>'
+                + (state.decisionOptions.length < 3 ? '<button class="add-opt" id="addOpt">+ ' + L('ADD OPTION', 'SEÇENEK EKLE') + '</button>' : '')
+                + '<button class="btn" id="predictBtn" ' + (state.recorded ? 'disabled' : '') + '>' + L('PREDICT', 'TAHMİN ET') + '</button>'
+                + predictBlock
+                + recordedBlock
+                + '<div class="hist-section"><div class="eyebrow">' + L('PAST DECISIONS', 'GEÇMİŞ KARARLAR') + '</div>' + histHtml + '</div>';
+        }
+
+        /* ============ SCREEN: DAILY (day-long: pending verification + running today timeline) ============ */
+        function renderMorning() {
+            const hour = new Date().getHours();
+            const isMorningWindow = hour < 12;
+            const pending = state.log.filter(i => !i.outcome);
+            const verified = state.log.filter(i => i.outcome);
+            const today = state.decisionHistory.filter(h => h.date === L('now', 'şimdi') || h.date === 'şimdi' || h.date === 'now');
+
+            let eyebrow, heading, sub;
+            if (pending.length > 0) {
+                eyebrow = isMorningWindow ? L('MORNING CHECK-IN', 'SABAH DOĞRULAMASI') : L('PENDING', 'BEKLEYEN DOĞRULAMA');
+                heading = '<h1>' + (isMorningWindow ? L('Good morning. ', 'Günaydın. ') : '') + L('There ' + (pending.length === 1 ? 'is' : 'are') + ' <em>' + pending.length + '</em> decision' + (pending.length === 1 ? '' : 's') + ' waiting to be verified.', 'Doğrulanmayı bekleyen <em>' + pending.length + '</em> karar var.') + '</h1>';
+                sub = L('Verify the outcome, add a short context, confirm or edit the mood guess.', 'Sonucu doğrula, kısa bağlam ekle, ruh hâli tahminini onayla ya da düzelt.');
+            } else if (today.length > 0) {
+                eyebrow = L('DAILY', 'GÜNLÜK');
+                heading = '<h1>' + L('You logged <em>' + today.length + '</em> decision' + (today.length === 1 ? '' : 's') + ' today.', 'Bugün <em>' + today.length + '</em> karar kaydettin.') + '</h1>';
+                sub = L('Nothing to verify right now. Here\'s today\'s flow; we\'ll ask about outcomes tomorrow morning.', 'Doğrulanacak bir şey yok. Aşağıda bugünün akışı var; yarın sabah sonuçlarını soracağız.');
+            } else {
+                eyebrow = L('DAILY', 'GÜNLÜK');
+                heading = '<h1>' + L('Nothing yet today.', 'Henüz bugün bir şey yok.') + '</h1>';
+                sub = L('Log something from the Decision tab and it\'ll build up here, throughout the day.', 'Karar sekmesinden bir şey kaydettiğinde burada, gün boyunca, birikerek görünür.');
+            }
+
+            const pendingHtml = pending.length === 0 ? '' : ('<div class="eyebrow" style="margin-top:4px;">' + (verified.length > 0 ? L('REMAINING', 'KALAN') : L('PENDING', 'BEKLEYEN')) + '</div>' +
+                pending.map((item) => {
+                    const idx = state.log.indexOf(item);
+                    const moodBlock = item.moodEditing
+                        ? '<div class="mood-edit"><input type="text" id="moodInput' + idx + '" value="' + item.moodGuess + '"/><button data-save-mood="' + idx + '">' + L('SAVE', 'KAYDET') + '</button></div>'
+                        : ('<div class="mood-guess"><span class="lbl">' + L('MOOD GUESS', 'RUH HÂLİ TAHMİNİ') + '</span>"' + item.moodGuess + '"'
+                            + '<div class="mood-actions"><button data-mood="onayla" data-idx="' + idx + '" class="' + (item.moodConfirmed === 'onayla' ? 'ok' : '') + '">' + L('CONFIRM', 'ONAYLA') + '</button>'
+                            + '<button data-mood="duzelt" data-idx="' + idx + '" class="' + (item.moodConfirmed === 'duzelt' ? 'on' : '') + '">' + L('EDIT', 'DÜZELT') + '</button></div></div>');
+
+                    return '<div class="morning-item" data-idx="' + idx + '">'
+                        + '<div class="mi-head"><span class="time">' + item.time + '</span><span class="predicted">' + L('PREDICTED', 'TAHMİN') + ': ' + item.predicted.toUpperCase() + ' ' + item.predictedPct + '%</span></div>'
+                        + '<div class="mi-body">'
+                        + '<div class="decision-text">' + item.text + '</div>'
+                        + '<div class="chosen">' + L('You chose', 'Seçtiğin') + ': ' + item.chosen + '</div>'
+                        + '<label class="field-label">' + L('WHAT ACTUALLY HAPPENED?', 'GERÇEKTE NE OLDU?') + '</label>'
+                        + '<div class="outcome-btns">'
+                        + '<button data-outcome="tam" class="' + (item.outcome === 'tam' ? 'on' : '') + '">' + L('Did it fully', 'Tam olarak yaptım') + '</button>'
+                        + '<button data-outcome="kismen" class="' + (item.outcome === 'kismen' ? 'on' : '') + '">' + L('Partially', 'Kısmen yaptım') + '</button>'
+                        + '<button data-outcome="hayir" class="' + (item.outcome === 'hayir' ? 'on' : '') + '">' + L("Didn't do it", 'Yapmadım') + '</button>'
+                        + '</div>'
+                        + '<div class="context-field"><label class="field-label">' + L('SHORT CONTEXT (optional)', 'KISA BAĞLAM (isteğe bağlı)') + '</label>'
+                        + '<textarea rows="2" data-context-idx="' + idx + '" placeholder="' + L('Why did it happen this way?', 'Neden böyle oldu?') + '">' + item.context + '</textarea></div>'
+                        + moodBlock
+                        + '</div></div>';
+                }).join(''));
+
+            const todayHtml = today.length === 0 ? '' : ('<div class="hist-section" style="margin-top:' + (pending.length > 0 ? '30' : '6') + 'px;">'
+                + '<div class="eyebrow">' + L('TODAY', 'BUGÜN') + '</div>'
+                + today.map(h => '<div class="hist-item"><span class="hi-mark ' + (h.match ? 'match' : 'diff') + '">' + (h.match ? '✓' : '≠') + '</span>'
+                    + '<div class="hi-main"><div class="hi-text">' + h.text + '</div><div class="hi-meta">' + L('predicted', 'tahmin') + ': ' + h.predicted + ' · ' + L('chose', 'seçim') + ': ' + h.chosen + '</div></div>'
+                    + '<span class="hi-cat">' + h.cat + '</span></div>').join('')
+                + '</div>');
+
+            let updateBlock = '';
+            if (state.log.length > 0 && pending.length === 0) {
+                updateBlock = state.treeUpdated
+                    ? '<div class="update-box"><div class="ub-top">' + L('TREE UPDATED', 'AĞAÇ GÜNCELLENDİ') + '</div><div class="ub-sub">' + L('Confidence will be recalculated with the next check-in.', 'Güven seviyesi bir sonraki doğrulamayla birlikte yeniden hesaplanacak.') + '</div></div>'
+                    : '<button class="btn" id="updateTreeBtn">' + L('UPDATE THE TREE', 'AĞACI GÜNCELLE') + '</button>';
+            }
+
+            return ''
+                + '<div class="eyebrow">' + eyebrow + '</div>'
+                + heading
+                + '<p class="sub">' + sub + '</p>'
+                + pendingHtml
+                + todayHtml
+                + (today.length === 0 && pending.length === 0 ? '<div class="empty-note">' + L('Nothing logged for today yet.', 'Henüz bugün için kaydedilmiş karar yok.') + '</div>' : '')
+                + updateBlock;
+        }
+
+        /* ============ SCREEN: ALTERNATE ============ */
+        function renderGhost() {
+            if (!state.ghostActive) state.ghostActive = ghostNodes[0].id;
+            const active = ghostNodes.find(n => n.id === state.ghostActive);
+
+            const cards = active.timeline.map((t, i) => {
+                const key = active.id + '-' + i;
+                const expanded = !!state.ghostExpanded[key];
+                return '<div class="ghost-card" data-ghost-card="' + key + '">'
+                    + '<div class="gh-meta">' + t.h + ' · <span class="conf">' + L('CONFIDENCE', 'GÜVEN') + ' ' + t.conf + '%</span></div>'
+                    + '<h3>' + t.title + '</h3><p>' + t.body + '</p>'
+                    + (expanded ? '<div class="gh-extra">' + t.extra + '</div>' : '')
+                    + '<div class="gh-toggle">' + (expanded ? L('− collapse', '− daralt') : L('+ detail', '+ detay')) + '</div>'
+                    + '</div>';
+            }).join('');
+
+            return ''
+                + '<div class="eyebrow">' + L('ALTERNATE PAST', 'ALTERNATİF GEÇMİŞ') + '</div>'
+                + '<h1>' + L('The past doesn\'t change. Only its <em>alternate</em> gets watched.', 'Geçmiş değişmez. <em>Alternatifi</em> yalnızca izlenir.') + '</h1>'
+                + '<p class="sub">' + L('Pick a turning point; the system simulates a different life from that point on. Tap a card for detail.', 'Bir dönüm noktası seç; sistem o noktadan farklı bir yaşamı simüle etsin. Kartlara tıklayarak detay aç.') + '</p>'
+                + '<div class="divergence-select">'
+                + ghostNodes.map(n => '<button data-ghost="' + n.id + '" class="' + (n.id === state.ghostActive ? 'active' : '') + '">' + n.label + '<span class="tag">' + n.tag + '</span></button>').join('')
+                + '</div>'
+                + '<div class="ghost-header">DIVERGENCE · ' + active.label.toUpperCase() + '</div>'
+                + cards
+                + '<div class="ghost-quote">' + L('"I can\'t calculate whether this life would be better.<br>I can only calculate that it would be different."', '"Bu hayatın daha iyi olup olmadığını hesaplayamam.<br>Yalnızca daha farklı olduğunu hesaplayabilirim."') + '</div>';
+        }
+
+        /* ============ EVENTS PER SCREEN ============ */
+        function bindScreenEvents() {
+
+            if (state.screen === 'now') {
+                document.querySelectorAll('[data-future]').forEach(row => {
+                    row.addEventListener('click', () => {
+                        const name = row.dataset.future;
+                        const level = getCurrentLevel();
+                        const node = level.nodes.find(n => n.name === name);
+                        if (node && node.children && node.children.length) {
+                            state.treePath.push(name);
+                            state.selectedPast = null;
+                            render();
+                        }
+                    });
+                });
+                document.querySelectorAll('[data-crumb]').forEach(seg => {
+                    seg.addEventListener('click', () => {
+                        const idx = +seg.dataset.crumb;
+                        state.treePath = idx === -1 ? [] : state.treePath.slice(0, idx + 1);
+                        render();
+                    });
+                });
+                document.querySelectorAll('[data-past-chip]').forEach(chip => {
+                    chip.addEventListener('click', () => {
+                        const id = chip.dataset.pastChip;
+                        state.selectedPast = state.selectedPast === id ? null : id;
+                        render();
+                    });
+                });
+                document.querySelectorAll('[data-past]').forEach(branch => {
+                    branch.addEventListener('click', () => {
+                        const id = branch.dataset.past;
+                        state.selectedPast = state.selectedPast === id ? null : id;
+                        render();
+                    });
+                });
+                const closePast = document.getElementById('closePast');
+                if (closePast) closePast.addEventListener('click', () => { state.selectedPast = null; render(); });
+            }
+
+            if (state.screen === 'decision') {
+                const dt = document.getElementById('decisionText');
+                if (dt) dt.addEventListener('input', e => { state.decisionText = e.target.value; });
+
+                document.querySelectorAll('[data-cat]').forEach(pill => {
+                    pill.addEventListener('click', () => {
+                        state.decisionCategory = pill.dataset.cat === state.decisionCategory ? null : pill.dataset.cat;
+                        render();
+                    });
+                });
+
+                document.querySelectorAll('.opt-input').forEach(inp => {
+                    inp.addEventListener('input', e => { state.decisionOptions[+e.target.dataset.idx] = e.target.value; });
+                });
+                document.querySelectorAll('.rm').forEach(b => {
+                    b.addEventListener('click', e => { state.decisionOptions.splice(+e.target.dataset.idx, 1); render(); });
+                });
+                const addOpt = document.getElementById('addOpt');
+                if (addOpt) addOpt.addEventListener('click', () => {
+                    if (state.decisionOptions.length < 3) { state.decisionOptions.push(''); render(); }
+                });
+
+                const predictBtn = document.getElementById('predictBtn');
+                if (predictBtn) predictBtn.addEventListener('click', () => {
+                    const valid = state.decisionOptions.filter(o => o.trim().length > 0);
+                    if (valid.length < 2) return;
+                    const pickIdx = Math.floor(Math.random() * valid.length);
+                    const pct = 42 + Math.floor(Math.random() * 34);
+                    state.predicted = { name: valid[pickIdx], pct };
+                    state.chosen = null;
+                    state.recorded = false;
+                    render();
+                });
+
+                document.querySelectorAll('.choice-row').forEach(row => {
+                    row.addEventListener('click', () => {
+                        state.chosen = row.dataset.choice;
+                        state.recorded = true;
+
+                        if (state.decisionCategory) {
+                            const futureName = catToFuture[state.decisionCategory];
+                            const top = futureTree.find(n => n.name === futureName);
+                            if (top) {
+                                const amount = 1 + Math.floor(Math.random() * 2);
+                                top.pct += amount;
+                                state.lastBump = { name: futureName, amount };
+                            }
+                        }
+                        state.decisionHistory.unshift({
+                            date: L('now', 'şimdi'), cat: state.decisionCategory || '—',
+                            text: state.decisionText || L('(untitled decision)', '(başlıksız karar)'),
+                            predicted: state.predicted.name, chosen: state.chosen,
+                            match: state.predicted.name === state.chosen
+                        });
+                        render();
+                    });
+                });
+            }
+
+            if (state.screen === 'morning') {
+                document.querySelectorAll('.outcome-btns button').forEach(b => {
+                    b.addEventListener('click', e => {
+                        const idx = +e.target.closest('.morning-item').dataset.idx;
+                        state.log[idx].outcome = e.target.dataset.outcome;
+                        render();
+                    });
+                });
+                document.querySelectorAll('[data-context-idx]').forEach(ta => {
+                    ta.addEventListener('input', e => { state.log[+e.target.dataset.contextIdx].context = e.target.value; });
+                });
+                document.querySelectorAll('.mood-actions button').forEach(b => {
+                    b.addEventListener('click', e => {
+                        const idx = +e.target.dataset.idx;
+                        if (e.target.dataset.mood === 'duzelt') { state.log[idx].moodEditing = true; }
+                        else { state.log[idx].moodConfirmed = 'onayla'; }
+                        render();
+                    });
+                });
+                document.querySelectorAll('[data-save-mood]').forEach(b => {
+                    b.addEventListener('click', e => {
+                        const idx = +e.target.dataset.saveMood;
+                        const val = document.getElementById('moodInput' + idx).value;
+                        state.log[idx].moodGuess = val;
+                        state.log[idx].moodEditing = false;
+                        state.log[idx].moodConfirmed = 'duzelt';
+                        render();
+                    });
+                });
+                const updateBtn = document.getElementById('updateTreeBtn');
+                if (updateBtn) updateBtn.addEventListener('click', () => {
+                    state.treeUpdated = true;
+                    state.confidenceRising = true;
+                    render();
+                });
+            }
+
+            if (state.screen === 'ghost') {
+                document.querySelectorAll('[data-ghost]').forEach(b => {
+                    b.addEventListener('click', e => {
+                        state.ghostActive = e.target.closest('[data-ghost]').dataset.ghost;
+                        render();
+                    });
+                });
+                document.querySelectorAll('[data-ghost-card]').forEach(card => {
+                    card.addEventListener('click', () => {
+                        const key = card.dataset.ghostCard;
+                        state.ghostExpanded[key] = !state.ghostExpanded[key];
+                        render();
+                    });
+                });
+            }
+        }
+
+        render();
+    </script>
 </body>
 </html>
