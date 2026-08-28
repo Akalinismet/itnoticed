@@ -388,6 +388,13 @@
             letter-spacing: .03em;
         }
 
+        .tip-label {
+            font-family: var(--mono);
+            font-size: 8px;
+            letter-spacing: .02em;
+            text-anchor: middle;
+        }
+
         .now-core {
             fill: var(--void);
             stroke: var(--bone);
@@ -555,6 +562,19 @@
                 margin-left: 4px;
                 animation: riseIn .3s ease;
             }
+
+            .future-row.sub-row {
+                padding-left: 30px;
+                background: var(--void-2);
+                cursor: default;
+                animation: riseIn .25s ease;
+            }
+
+                .future-row.sub-row .name {
+                    font-size: 12px;
+                    color: var(--bone-dim);
+                    width: 98px;
+                }
 
         .past-strip {
             display: flex;
@@ -1483,7 +1503,7 @@
             catToFuture = c.catToFuture;
             ghostNodes = c.ghostNodes;
             state.lang = lang;
-            state.treePath = [];
+            state.expandedFuture = null;
             state.selectedPast = null;
             state.confidenceRising = false;
             state.decisionOptions = [...c.decisionOptions];
@@ -1505,7 +1525,7 @@
             lang: 'en',
             screen: 'now',
             settingsOpen: false,
-            treePath: [],
+            expandedFuture: null,
             selectedPast: null,
             confidenceRising: false,
             decisionOptions: [],
@@ -1582,87 +1602,76 @@
         }
 
         /* ============ HELPERS ============ */
-        function getCurrentLevel() {
-            if (state.treePath.length === 0) { return { parentName: null, parentPct: 100, nodes: futureTree }; }
-            let nodes = futureTree; let parent = null;
-            for (const name of state.treePath) {
-                parent = nodes.find(n => n.name === name);
-                nodes = parent && parent.children ? parent.children : [];
-            }
-            return { parentName: parent ? parent.name : null, parentPct: parent ? parent.pct : 100, nodes };
-        }
-
         /* ============ SCREEN: NOW / TREE ============ */
-        /* ============ organic branch geometry helpers ============ */
+        /* ============ branch geometry helpers ============ */
         function polarPt(cx, cy, angleDeg, r) {
             const rad = angleDeg * Math.PI / 180;
             return [cx + Math.cos(rad) * r, cy + Math.sin(rad) * r];
         }
-        function bezierPt(p0, p1, p2, t) {
-            const mt = 1 - t;
-            return [mt * mt * p0[0] + 2 * mt * t * p1[0] + t * t * p2[0], mt * mt * p0[1] + 2 * mt * t * p1[1] + t * t * p2[1]];
+        function line(p0, p2, color, width, opacity, dataAttr) {
+            return '<line ' + (dataAttr || '') + ' x1="' + p0[0].toFixed(1) + '" y1="' + p0[1].toFixed(1) + '" x2="' + p2[0].toFixed(1) + '" y2="' + p2[1].toFixed(1) + '" stroke="' + color + '" stroke-width="' + width.toFixed(1) + '" stroke-linecap="round" opacity="' + opacity + '"/>';
         }
-        // builds one curved branch (as a quadratic path) plus a couple of small forking twigs along it
-        function buildBranch(opts) {
-            const { x1, y1, angle, len, color, width, opacity, dataAttr, twigs } = opts;
-            const p0 = [x1, y1];
-            const p2 = polarPt(x1, y1, angle, len);
-            const bendSign = (((angle + 450) % 360) - 180) < 0 ? -1 : 1; // curve away from vertical, left/right depending on side
-            const mid = polarPt(x1, y1, angle, len * 0.5);
-            const p1 = polarPt(mid[0], mid[1], angle - 90, 12 * bendSign);
-            const d = 'M' + p0[0].toFixed(1) + ',' + p0[1].toFixed(1) + ' Q' + p1[0].toFixed(1) + ',' + p1[1].toFixed(1) + ' ' + p2[0].toFixed(1) + ',' + p2[1].toFixed(1);
-            let out = '<path class="branch" ' + dataAttr + ' d="' + d + '" fill="none" stroke="' + color + '" stroke-width="' + width.toFixed(1) + '" stroke-linecap="round" opacity="' + opacity + '"/>';
-
-            if (twigs) {
-                [[0.52, 26, 0.34], [0.78, -20, 0.24]].forEach(([t, angOff, lenRatio]) => {
-                    const origin = bezierPt(p0, p1, p2, t);
-                    const tw = polarPt(origin[0], origin[1], angle + angOff, len * lenRatio);
-                    out += '<line class="twig" style="pointer-events:none" x1="' + origin[0].toFixed(1) + '" y1="' + origin[1].toFixed(1) + '" x2="' + tw[0].toFixed(1) + '" y2="' + tw[1].toFixed(1) + '" stroke="' + color + '" stroke-width="' + Math.max(1, width * 0.45).toFixed(1) + '" stroke-linecap="round" opacity="' + (opacity * 0.7).toFixed(2) + '"/>';
-                });
-            }
-            return out;
+        function tipLabel(p, text, color) {
+            return '<text x="' + p[0].toFixed(1) + '" y="' + p[1].toFixed(1) + '" class="tip-label" fill="' + color + '">' + text + '</text>';
         }
 
         function renderNow() {
-            const level = getCurrentLevel();
-            const nodes = level.nodes;
-            const spread = 140;
+            const nodes = futureTree;
+            const spread = 132;
             const startAngle = -90 - spread / 2;
             let acc = 0;
             const sumPct = nodes.reduce((a, f) => a + f.pct, 0) || 1;
             const topPct = Math.max(...nodes.map(n => n.pct));
 
-            const TRUNK_LEN = 24;
-            const trunkTop = polarPt(150, 195, -90, TRUNK_LEN);
-            const trunk = '<line x1="150" y1="195" x2="' + trunkTop[0].toFixed(1) + '" y2="' + trunkTop[1].toFixed(1) + '" stroke="var(--bone-dim)" stroke-width="2.4" stroke-linecap="round" opacity="0.55"/>';
+            const CORE = [150, 195];
+            const TRUNK_LEN = 20;
+            const trunkTop = polarPt(CORE[0], CORE[1], -90, TRUNK_LEN);
+            const trunk = line(CORE, trunkTop, 'var(--bone-dim)', 2.2, 0.55);
 
-            const branches = nodes.map((f) => {
-                const a = startAngle + (spread * (acc + f.pct / 2 / sumPct));
+            let svgFutures = '';
+            nodes.forEach((f) => {
+                const a1 = startAngle + (spread * (acc + f.pct / 2 / sumPct));
                 acc += f.pct / sumPct;
-                const shareOfTotal = f.pct;
-                const len = 78 + (shareOfTotal * 1.5);
-                const stroke = 1 + (shareOfTotal / 100) * 6.5;
-                const isSelected = f.pct === topPct;
-                const color = isSelected ? 'var(--ember)' : 'var(--branch-dim)';
-                const opacity = isSelected ? 1 : 0.75;
-                return buildBranch({ x1: trunkTop[0], y1: trunkTop[1], angle: a, len, color, width: stroke, opacity, dataAttr: 'data-branch="' + f.name + '"', twigs: true });
-            }).join('');
+                const len1 = 46 + f.pct * 1.35;
+                const isTop = f.pct === topPct;
+                const color1 = isTop ? 'var(--ember)' : 'var(--branch-dim)';
+                const w1 = 1.2 + (f.pct / 100) * 5.5;
+                const p1end = polarPt(trunkTop[0], trunkTop[1], a1, len1);
 
-            const pastTrunkTop = polarPt(150, 195, -90, 14);
+                svgFutures += line(trunkTop, p1end, color1, w1, isTop ? 1 : 0.7, 'data-branch="' + f.name + '"');
+                svgFutures += '<circle cx="' + p1end[0].toFixed(1) + '" cy="' + p1end[1].toFixed(1) + '" r="2.6" fill="' + color1 + '" opacity="' + (isTop ? 1 : 0.7) + '"/>';
+
+                if (f.children && f.children.length) {
+                    const childSum = f.children.reduce((a, c) => a + c.pct, 0) || 1;
+                    const childTop = Math.max(...f.children.map(c => c.pct));
+                    const subSpread = 46;
+                    const subStart = a1 - subSpread / 2;
+                    let cacc = 0;
+                    f.children.forEach((c) => {
+                        const a2 = subStart + (subSpread * (cacc + c.pct / 2 / childSum));
+                        cacc += c.pct / childSum;
+                        const len2 = 30 + c.pct * 2.6;
+                        const p2end = polarPt(p1end[0], p1end[1], a2, len2);
+                        const onSelectedPath = isTop && (c.pct === childTop);
+                        const color2 = onSelectedPath ? 'var(--ember)' : 'var(--branch-dim)';
+                        const w2 = 0.8 + (c.pct / 100) * 4;
+                        svgFutures += line(p1end, p2end, color2, w2, onSelectedPath ? 0.95 : 0.5);
+                        svgFutures += tipLabel(polarPt(p2end[0], p2end[1], a2, 9), c.pct + '%', onSelectedPath ? 'var(--ember)' : 'var(--bone-dim)');
+                    });
+                } else {
+                    svgFutures += tipLabel(polarPt(p1end[0], p1end[1], a1, 9), f.pct + '%', color1);
+                }
+            });
+
+            const pastTrunkTop = polarPt(CORE[0], CORE[1], -90, 12);
             const pastBranches = pastNodes.slice(0, 4).map((p, i) => {
-                const bw = 0.8 + (p.importanceNow / 100) * 2.0;
-                const op = 0.25 + (p.importanceNow / 100) * 0.45;
+                const bw = 0.8 + (p.importanceNow / 100) * 1.8;
+                const op = 0.22 + (p.importanceNow / 100) * 0.4;
                 const angle = -140 + i * 16;
-                const len = 58 + (p.importanceNow / 100) * 40;
-                return buildBranch({ x1: pastTrunkTop[0], y1: pastTrunkTop[1], angle, len, color: 'var(--ghost)', width: bw, opacity: op, dataAttr: 'data-past="' + p.id + '"', twigs: false });
+                const len = 46 + (p.importanceNow / 100) * 30;
+                const tip = polarPt(pastTrunkTop[0], pastTrunkTop[1], angle, len);
+                return line(pastTrunkTop, tip, 'var(--ghost)', bw, op, 'data-past="' + p.id + '"');
             }).join('');
-
-            const crumb = state.treePath.length === 0
-                ? '<span class="seg current">' + L('NOW', 'ŞİMDİ') + '</span>'
-                : '<span class="seg" data-crumb="-1">' + L('NOW', 'ŞİMDİ') + '</span>' + state.treePath.map((p, i) => {
-                    const isLast = i === state.treePath.length - 1;
-                    return '<span class="sep">›</span><span class="seg ' + (isLast ? 'current' : '') + '" data-crumb="' + i + '">' + p + '</span>';
-                }).join('');
 
             let detailBlock = '';
             if (state.selectedPast) {
@@ -1685,10 +1694,9 @@
             return ''
                 + '<div class="eyebrow">' + L('CURRENT SELF', 'ŞİMDİKİ BENLİK') + '</div>'
                 + '<h1>' + L('The five most likely <em>futures</em> ahead of you.', 'Önündeki en olası <em>beş gelecek</em>.') + '</h1>'
-                + '<p class="sub">' + L('Tap a branch to see the finer branches inside it. Tap a past node to see why it grew.', 'Bir dala tıkla; içinden yayılan daha ince dalları gör. Bir geçmiş düğümüne tıkla; neden büyüdüğünü gör.') + '</p>'
-                + '<div class="crumb">' + crumb + '</div>'
+                + '<p class="sub">' + L('Each branch already forks into the finer paths inside it. Tap a past node to see why it grew.', 'Her dal, içindeki daha ince yollara şimdiden ayrılıyor. Bir geçmiş düğümüne tıkla; neden büyüdüğünü gör.') + '</p>'
                 + '<div class="tree-wrap"><svg viewBox="0 0 300 260">'
-                + pastBranches + trunk + branches
+                + pastBranches + trunk + svgFutures
                 + '<circle class="now-core-glow" cx="150" cy="195" r="16"/>'
                 + '<circle class="now-core" cx="150" cy="195" r="7"/>'
                 + '<text x="150" y="222" text-anchor="middle" class="node-label">' + L('NOW', 'ŞİMDİ') + '</text>'
@@ -1699,19 +1707,23 @@
                 + nodes.map(f => {
                     const hasChildren = f.children && f.children.length > 0;
                     const isSelected = f.pct === topPct;
+                    const expanded = state.expandedFuture === f.name;
+                    const subRows = (hasChildren && expanded) ? f.children.map(c => {
+                        return '<div class="future-row sub-row"><span class="name">' + c.name + '</span>'
+                            + '<span class="bar-track"><span class="bar-fill ' + (isSelected && c.pct === Math.max(...f.children.map(x => x.pct)) ? 'on' : 'off') + '" style="width:' + ((c.pct / f.pct) * 100) + '%"></span></span>'
+                            + '<span class="pct off">' + c.pct + '%</span></div>';
+                    }).join('') : '';
                     return '<div class="future-row" data-future="' + f.name + '">'
-                        + '<span class="name">' + f.name + (hasChildren ? ' <span class="chev">›</span>' : '') + '</span>'
+                        + '<span class="name">' + f.name + (hasChildren ? ' <span class="chev">' + (expanded ? '⌄' : '›') + '</span>' : '') + '</span>'
                         + '<span class="bar-track"><span class="bar-fill ' + (isSelected ? 'on' : 'off') + '" style="width:' + ((f.pct / sumPct) * 100) + '%"></span></span>'
                         + '<span class="pct ' + (isSelected ? 'on' : 'off') + '">' + f.pct + '%' + (state.lastBump && state.lastBump.name === f.name ? '<span class="bump">+' + state.lastBump.amount + '</span>' : '') + '</span>'
-                        + '</div>';
+                        + '</div>' + subRows;
                 }).join('')
                 + '</div>'
-                + (state.treePath.length === 0 ? (
-                    '<div class="eyebrow" style="margin-top:22px;">' + L('EFFECTIVE PAST', 'ETKİLİ GEÇMİŞ') + '</div>'
-                    + '<div class="past-strip">'
-                    + pastNodes.map(p => '<button class="past-chip ' + (state.selectedPast === p.id ? 'active' : '') + '" data-past-chip="' + p.id + '">' + p.label + ' · ' + p.importanceNow + '%</button>').join('')
-                    + '</div>'
-                ) : '')
+                + '<div class="eyebrow" style="margin-top:22px;">' + L('EFFECTIVE PAST', 'ETKİLİ GEÇMİŞ') + '</div>'
+                + '<div class="past-strip">'
+                + pastNodes.map(p => '<button class="past-chip ' + (state.selectedPast === p.id ? 'active' : '') + '" data-past-chip="' + p.id + '">' + p.label + ' · ' + p.importanceNow + '%</button>').join('')
+                + '</div>'
                 + detailBlock;
         }
 
@@ -1874,20 +1886,11 @@
                 document.querySelectorAll('[data-future]').forEach(row => {
                     row.addEventListener('click', () => {
                         const name = row.dataset.future;
-                        const level = getCurrentLevel();
-                        const node = level.nodes.find(n => n.name === name);
+                        const node = futureTree.find(n => n.name === name);
                         if (node && node.children && node.children.length) {
-                            state.treePath.push(name);
-                            state.selectedPast = null;
+                            state.expandedFuture = state.expandedFuture === name ? null : name;
                             render();
                         }
-                    });
-                });
-                document.querySelectorAll('[data-crumb]').forEach(seg => {
-                    seg.addEventListener('click', () => {
-                        const idx = +seg.dataset.crumb;
-                        state.treePath = idx === -1 ? [] : state.treePath.slice(0, idx + 1);
-                        render();
                     });
                 });
                 document.querySelectorAll('[data-past-chip]').forEach(chip => {
@@ -2020,7 +2023,6 @@
                 });
             }
         }
-
 
         render();
     </script>
